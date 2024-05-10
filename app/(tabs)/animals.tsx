@@ -1,23 +1,11 @@
 import { StyleSheet, View, Text } from "react-native";
 import { useEffect } from "react";
-import { useRouter } from "expo-router";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function animals (props: any) 
-{
-	const router = useRouter();
-	
+export default function animals (props: any)
+{	
 	useEffect(() => 
-	{
-		checkingUserLogged();
-		
+	{		
 	}, [props]);
-
-	async function checkingUserLogged ()
-	{
-		const value = await AsyncStorage.getItem("user-logged");		
-		if (value !== null && value === "false") { router.push({ pathname: "/auth", params: { logout: "false" } }); }
-	}
 
 	return (
 		<View style={styles.container}>

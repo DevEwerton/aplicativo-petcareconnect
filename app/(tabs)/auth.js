@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useRouter, useLocalSearchParams, useNavigation } from "expo-router";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function auth (props) 
+export default function auth (props)
 {
 	const router = useRouter();
 	const navigation = useNavigation();
@@ -22,13 +22,13 @@ export default function auth (props)
 
 	async function onLogout ()
 	{
-		// console.log("setting logout...");	
+		console.log("setting logout...");
 		await AsyncStorage.setItem("user-logged", "false");
 	}
 
 	async function onLogin ()
 	{
-		// console.log("setting login...");
+		console.log("setting login...");
 		await AsyncStorage.setItem("user-logged", "true");
 		router.push({ pathname: "/", params: { logout: "true" } });
 	}

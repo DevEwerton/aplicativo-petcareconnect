@@ -1,20 +1,13 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect } from "react";
 import "react-native-reanimated";
-// import Auth from "./(tabs)/auth";r
 
-import { useColorScheme } from "@/hooks/useColorScheme";
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout (props: any) 
 {
-	const [logged, setLogged] = useState(false);
-	const colorScheme = useColorScheme();
 	const [loaded] = useFonts({SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),});
 	const router = useRouter();
 
