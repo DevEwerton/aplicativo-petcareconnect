@@ -1,17 +1,17 @@
 import { StyleSheet, View, Text } from "react-native";
 
-export default function TabTwoScreen() 
+export default function animals () 
 {
 	return (
 		<View style={styles.container}>
-			<Text style={styles.text}>Expore View</Text>
+			<Text style={styles.text}>Animals View</Text>
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: "green",
+		backgroundColor: "#ffffff",
 		flex: 1,
 		display: "flex",
 		justifyContent: "center",
@@ -21,6 +21,6 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 24,
-		color: "white"
+		color: "#ffffff"
 	}
 });

@@ -1,21 +1,17 @@
-import { Stack } from "expo-router";
 import { StyleSheet, View, Text } from "react-native";
 
-export default function NotFoundScreen() 
+export default function reservations () 
 {
 	return (
-		<>
-			<Stack.Screen options={{ title: "Oops!", headerShown: false }} />
-			<View style={styles.container}>
-				<Text style={styles.text}>Opsssss!</Text>
-			</View>
-		</>
+		<View style={styles.container}>
+			<Text style={styles.text}>Reservations View</Text>
+		</View>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: "white",
+		backgroundColor: "#ffffff",
 		flex: 1,
 		display: "flex",
 		justifyContent: "center",
@@ -25,6 +21,6 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 24,
-		color: "red"
+		color: "#ffffff"
 	}
 });

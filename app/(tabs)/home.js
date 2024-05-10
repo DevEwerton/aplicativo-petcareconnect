@@ -1,10 +1,18 @@
 import { StyleSheet, View, Text } from "react-native";
+import { useRouter } from "expo-router";
 
-export default function Search() 
+export default function home (props) 
 {
+	const router = useRouter();
+
 	return (
 		<View style={styles.container}>
-			<Text style={styles.text}>Search View</Text>
+			<Text style={styles.text}>Home View</Text>
+			<Text
+				onPress={() => {
+					router.push({ pathname: "/auth", params: { logout: "true", id: 444, other: "other" } });
+				}}
+			>SAIR</Text>
 		</View>
 	);
 }
@@ -21,6 +29,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 24,
-		color: "#ffffff"
+		color: "#ff0000",
+
 	}
 });
