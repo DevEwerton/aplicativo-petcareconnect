@@ -1,30 +1,9 @@
 import { Tabs, usePathname } from "expo-router";
-import React, { useState, useEffect } from "react";
-
+import React from "react";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { useRouter, useNavigation, Stack, useLocalSearchParams } from "expo-router";
 
 export default function TabLayout (props: any) 
 {
-	const colorScheme = useColorScheme();
-	const navigation = useNavigation();
-	const { logout } = useLocalSearchParams();
-	let path = usePathname();
-	console.log("path: ", path);
-
-
-	useEffect(() => 
-	{
-		navigation.addListener('beforeRemove', (e) => {
-			console.log('onBack pressioned on Auth view...');
-			e.preventDefault();
-		});
-
-		console.log("logout on _layout tabs: ", logout);
-
-	}, [props]);
-
 	return (
 		<Tabs
 			screenOptions={

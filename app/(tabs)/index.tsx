@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { useNavigation, useRouter, useLocalSearchParams } from "expo-router";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Search (props: any) 
 {
@@ -14,14 +15,20 @@ export default function Search (props: any)
 			console.log('onBack pressioned on Auth view...');
 			e.preventDefault();
 		});
-
-		if (logout)
+		
+		setInterval(() => checkingUserLogged(), 1000);
+		
+	}, [props, checkingUserLogged]);
+	
+	async function checkingUserLogged ()
+	{
+		const value = await AsyncStorage.getItem("user-logged");
+		
+		if (value !== null && value === "false") 
 		{
-			router.push({ pathname: "/auth", params: { logout: "true", id: 444, other: "other" } });
+			router.push({ pathname: "/auth", params: { logout: "false" } });
 		}
-		console.log("logout on index: ", logout);
-
-	}, [props]);
+	}
 
 	return (
 		<View style={styles.container}>

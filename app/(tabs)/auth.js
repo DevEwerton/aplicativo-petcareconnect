@@ -1,6 +1,7 @@
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { Fragment, useEffect, useState } from "react";
-import { useRouter, useLocalSearchParams, useNavigation, Stack } from "expo-router";
+import { StyleSheet, View, Text } from "react-native";
+import { useEffect } from "react";
+import { useRouter, useLocalSearchParams, useNavigation } from "expo-router";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function auth (props) 
 {
@@ -11,22 +12,31 @@ export default function auth (props)
 	useEffect(() => 
 	{
 		navigation.addListener('beforeRemove', (e) => {
-            console.log('onBack pressioned on Auth view...');
+            console.log('onBack pressioned on auth view...');
             e.preventDefault();
         });
 
-		console.log("logout on auth view: ", logout);
+		if (logout) { onLogout(); }
 
 	}, [props]);
+
+	async function onLogout ()
+	{
+		// console.log("setting logout...");	
+		await AsyncStorage.setItem("user-logged", "false");
+	}
+
+	async function onLogin ()
+	{
+		// console.log("setting login...");
+		await AsyncStorage.setItem("user-logged", "true");
+		router.push({ pathname: "/", params: { logout: "true" } });
+	}
 
 	return (
 		<View style={styles.container}>
 			<Text style={styles.text}>Auth View (for logout)</Text>
-			<Text
-				onPress={() => {
-					router.push({ pathname: "/", params: { logout: "true", id: 444, other: "other" } });
-				}}
-			>ENTRAR</Text>
+			<Text onPress={() => onLogin()}>ENTRAR</Text>
 		</View>
 	);
 }
