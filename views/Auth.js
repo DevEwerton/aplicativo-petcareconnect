@@ -8,7 +8,7 @@ export default function Auth (props)
             <Text style={styles.text}>Auth view</Text>
             <TouchableOpacity
                 style={styles.button}
-                onPress={props.onLogin}
+                onPress={thi}
             >
                 <Text style={styles.labelButton}>Click</Text>
             </TouchableOpacity>

@@ -1,22 +1,40 @@
-import { Tabs } from "expo-router";
-import React from "react";
+import { Tabs, usePathname } from "expo-router";
+import React, { useState, useEffect } from "react";
 
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { useRouter, useNavigation, Stack, useLocalSearchParams } from "expo-router";
 
-export default function TabLayout() 
+export default function TabLayout (props: any) 
 {
 	const colorScheme = useColorScheme();
+	const navigation = useNavigation();
+	const { logout } = useLocalSearchParams();
+	let path = usePathname();
+	console.log("path: ", path);
+
+
+	useEffect(() => 
+	{
+		navigation.addListener('beforeRemove', (e) => {
+			console.log('onBack pressioned on Auth view...');
+			e.preventDefault();
+		});
+
+		console.log("logout on _layout tabs: ", logout);
+
+	}, [props]);
 
 	return (
 		<Tabs
 			screenOptions={
 				{
-					headerShown: true,
+					headerShown: false,
 					tabBarActiveTintColor: "#000000",
 					tabBarStyle: {
 						height: 85,
 						backgroundColor: "#BAD36D",
+						display: usePathname() === '/auth' ? 'none' : 'flex',
 					},
 					tabBarLabelStyle: {
 						fontSize: 14,
@@ -60,6 +78,13 @@ export default function TabLayout()
 					tabBarIcon: ({ color, focused }) => (
 						<TabBarIcon name={"home"} color={focused ? "#000000" : "#949494"} />
 					),
+				}}
+			/>
+			<Tabs.Screen
+				name="auth"
+				options={{
+					title:"Auth",
+					tabBarButton:()=>null
 				}}
 			/>
 		</Tabs>

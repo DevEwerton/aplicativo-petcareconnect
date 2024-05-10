@@ -10,7 +10,7 @@ export default function home (props)
 			<Text style={styles.text}>Home View</Text>
 			<Text
 				onPress={() => {
-					router.push({ pathname: "/auth", params: { logout: "true", id: 444, other: "other" } });
+					router.push({ pathname: "/", params: { logout: "true", id: 444, other: "other" } });
 				}}
 			>SAIR</Text>
 		</View>

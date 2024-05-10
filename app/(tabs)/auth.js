@@ -1,39 +1,32 @@
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Fragment, useEffect, useState } from "react";
-import { useRouter, useLocalSearchParams, useNavigation } from "expo-router";
+import { useRouter, useLocalSearchParams, useNavigation, Stack } from "expo-router";
 
 export default function auth (props) 
 {
 	const router = useRouter();
-	const { logout } = useLocalSearchParams();
-	const [logged, setLogged] = useState(false);
 	const navigation = useNavigation();
+	const { logout } = useLocalSearchParams();
 
 	useEffect(() => 
 	{
 		navigation.addListener('beforeRemove', (e) => {
-            e.preventDefault();
             console.log('onBack pressioned on Auth view...');
+            e.preventDefault();
         });
 
-		if (logout) 
-		{
-			console.log("logout: ", logout);
-			console.log("props: ", props);
-			if (logged) { router.push({pathname: "/reservations", params: {}}); }
-		}
+		console.log("logout on auth view: ", logout);
 
 	}, [props]);
 
 	return (
-		<View style={{...styles.container, height: (logged) ? "0%" : "100%"}}>
+		<View style={styles.container}>
 			<Text style={styles.text}>Auth View (for logout)</Text>
-			<TouchableOpacity
-				style={styles.button}
-				onPress={() => setLogged(true)}
-			>
-				<Text style={styles.labelButton}>ENTRAR</Text>
-			</TouchableOpacity>
+			<Text
+				onPress={() => {
+					router.push({ pathname: "/", params: { logout: "true", id: 444, other: "other" } });
+				}}
+			>ENTRAR</Text>
 		</View>
 	);
 }
@@ -42,6 +35,7 @@ const styles = StyleSheet.create({
 	container: {
 		backgroundColor: "#ffffff",
 		display: "flex",
+		height: "100%",
 		justifyContent: "center",
 		alignContent: "center",
 		verticalAlign: "middle",

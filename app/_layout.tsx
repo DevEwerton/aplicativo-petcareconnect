@@ -4,7 +4,7 @@ import { Stack, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { Fragment, useEffect, useState } from "react";
 import "react-native-reanimated";
-import Auth from "./auth";
+// import Auth from "./(tabs)/auth";r
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 
@@ -26,20 +26,8 @@ export default function RootLayout (props: any)
 
 	if (!loaded) { return null; }
 
-	function onLogin ()
-	{
-		setLogged(true);
-	}
-
-	function onLogout ()
-	{
-		console.log("logoutting...");
-		setLogged(false);
-	}
-
 	return (
 		<Fragment>
-			<Auth onLogin={onLogin} onLogout={onLogout}/>
 			<Stack>
 				<Stack.Screen 
 					name="(tabs)" 
