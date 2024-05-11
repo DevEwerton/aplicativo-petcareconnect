@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useNavigation, useRouter, Tabs, usePathname } from "expo-router";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function TabLayout (props: any) 
+export default function TabLayout (props) 
 {
 	const router = useRouter();
 	const navigation = useNavigation();
@@ -85,6 +85,10 @@ export default function TabLayout (props: any)
 			<Tabs.Screen
 				name="auth"
 				options={{ title:"Auth", tabBarButton: () => null }}
+			/>
+			<Tabs.Screen
+				name="create_petshop"
+				options={{ title:"Cadastrar Petshop", tabBarButton: () => null }}
 			/>
 		</Tabs>
 	);
