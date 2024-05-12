@@ -10,6 +10,7 @@ import Input from "../../components/Input";
 import brand from "../../assets/images/icon.png";
 
 const WINDOW_WIDHT = Dimensions.get('window').width;
+const WINDOW_HEIGHT = Dimensions.get('window').height;
 
 export default function auth (props)
 {
@@ -144,12 +145,12 @@ const styles = StyleSheet.create({
 		backgroundColor: COLORS.lightOne,
 		flex: 1,
 		display: "flex",
-		justifyContent: "center",
 		textAlign: "center",
 		verticalAlign: "middle",
 		position: "relative",
 		paddingTop: HEIGHT_HEADER,
 		padding: 40,
+		paddingTop: (0.2 * WINDOW_HEIGHT)
 	},
 	line: {
 		width: "100%",

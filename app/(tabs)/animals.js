@@ -21,7 +21,7 @@ export default function animals (props)
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: COLORS.lightOne,
+		backgroundColor: COLORS.lightTwo,
 		flex: 1,
 		position: "relative",
 		paddingTop: HEIGHT_HEADER

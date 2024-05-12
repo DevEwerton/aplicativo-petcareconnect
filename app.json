@@ -2,7 +2,7 @@
   "expo": {
     "name": "PetCare Connect",
     "slug": "aplicativo-petcareconnect",
-    "version": "5.0.0",
+    "version": "6.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -21,7 +21,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.devewerton.aplicativopetcareconnect",
-      "versionCode": 5
+      "versionCode": 6
     },
     "web": {
       "bundler": "metro",

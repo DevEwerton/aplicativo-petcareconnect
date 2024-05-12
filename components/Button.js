@@ -6,10 +6,10 @@ export default function Button (props)
 {
     return (
         <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, (props.style && props.style)]}
             onPress={props.onPress}
         >
-            <Text style={styles.label}>{props.label}</Text>
+            <Text style={[styles.label, (props.styleLabel && props.styleLabel)]}>{props.label}</Text>
         </TouchableOpacity>
     )
 }
@@ -17,7 +17,7 @@ export default function Button (props)
 const styles = StyleSheet.create({
     button: {
         minHeight: 60,
-        minWidth: 200,
+        minWidth: 60,
         borderWidth: 2,
         padding: 4,
         borderColor: COLORS.primary,
