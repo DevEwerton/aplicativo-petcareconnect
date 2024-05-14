@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Alert } from "react-native";
 import { COLORS, HEIGHT_HEADER } from "../../constants";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
 import Input from "../../components/Input";
 import Header from "../../components/Header";
@@ -10,16 +10,34 @@ import Button from "../../components/Button";
 export default function Search (props)
 {
 	const router = useRouter();
+	const [id, setId] = useState(null);
 	const [name, setName] = useState("");
 	const [address, setAddress] = useState("");
 	const [phone, setPhone] = useState("");
+	const [modeView, setModeView] = useState("CREATE");
+	const { mode, idParam, nameParam, addressParam, phoneParam } = useLocalSearchParams();
 
 	useEffect(() => 
 	{
+		if (mode === "UPDATE") 
+		{ 
+			onEdit(idParam, nameParam, addressParam, phoneParam);
+			setModeView("UPDATE");
+		}
 		
 	}, [props]);
 
-	async function onCreate ()
+	async function onEdit (idParam, nameParam, addressParam, phoneParam)
+	{
+		console.log("onPrepareEdit...");
+		
+		setId(idParam);
+		setName(nameParam);
+		setAddress(addressParam);
+		setPhone(phoneParam);
+	}
+
+	async function onSave ()
 	{
 		if (name.toString().trim() === "" || address.toString().trim() === "" || phone.toString().trim() === "")
 		{ 
@@ -27,11 +45,26 @@ export default function Search (props)
 			return;
 		}
 
-		router.push({ pathname: "/", params: { name, address, phone, action: "CREATE" } });
+		let params = {
+			name,
+			address,
+			phone
+		};
+		let action = "CREATE";
 
+		if (modeView === "UPDATE") 
+		{ 
+			params.id = id;
+			action = "UPDATED";
+		}
+
+		router.push({ pathname: "/", params: { ...params, action } });
+
+		setId(null);
 		setName("");
 		setAddress("");
 		setPhone("");
+		setModeView("CREATE");
 	}
 
 	return (
@@ -58,8 +91,8 @@ export default function Search (props)
 					onChangeText={(phone) => setPhone(phone)}
 				/>
 				<Button
-					onPress={onCreate}
-					label="cadastrar"
+					onPress={onSave}
+					label={`${modeView === "CREATE" ? "cadastrar" : "atualizar"}`}
 				/>
 			</View>
 		</View>

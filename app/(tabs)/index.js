@@ -6,6 +6,8 @@ import { COLORS, HEIGHT_HEADER } from "../../constants";
 import Button from "../../components/Button";
 import { ItemListPetshop } from "../../components/ItemListPetshop";
 
+const API = require("../../api");
+
 const PETSHOPS = [
 	{
 		id: 1,
@@ -24,8 +26,8 @@ const PETSHOPS = [
 export default function Search (props)
 {
 	const router = useRouter();	const navigation = useNavigation();
-	const [petshops, setPetshops] = useState(PETSHOPS)
-	const { name, address, phone, action } = useLocalSearchParams();
+	const [petshops, setPetshops] = useState([])
+	const { id, name, address, phone, action } = useLocalSearchParams();
 
 	useEffect(() => 
 	{
@@ -38,17 +40,72 @@ export default function Search (props)
 		console.log("address: ", address);
 		console.log("phone: ", phone);
 		console.log("action: ", action);
+
+		if (action === "CREATE") { onCreatePetshop(name, address, phone); }
+		if (action === "UPDATED") { onUpdatePetshop(id, name, address, phone); }
+		
+		getAllPetshops();
 		
 	}, [props]);
 
+	async function getAllPetshops ()
+	{
+		let api = new API();
+		let response = await api.petshop().getAll("");
+		let petshops = [];
+
+		if (response.code === 200)
+		{
+			let data = response.data;	
+			
+			Object.keys(data).forEach(k => {
+				let petshop = data[k];
+
+				petshops.push(
+					{
+						id: k,
+						name: petshop.name,
+						address: petshop.address,
+						phone: petshop.phone
+					}
+				);
+			});
+		}
+
+		console.log("getAllPetshops response: ", response);
+		setPetshops(petshops);
+	}
+
 	async function onEditPetshop (props)
 	{
-		console.log("onEditPetshop: ", props);
+		let {id, name, address, phone} = props;
+		router.push({ pathname: "/create_petshop", params: { mode: "UPDATE", idParam: id, nameParam: name, addressParam: address, phoneParam: phone } });
+		console.log("onEditPetshop: ", id);
+		console.log("onEditPetshop: ", name);
 	}
 
 	async function onRemovePetshop (props)
 	{
 		console.log("remove: ", props);
+	}
+
+	async function onUpdatePetshop (id, name, address, phone)
+	{
+		console.log("onUpdatePetshop...");
+		let api = new API();
+		let response = await api.petshop().update("", id, {name, address, phone});
+
+		if (response.code === 200) { getAllPetshops(); }
+	}
+
+	async function onCreatePetshop (name, address, phone)
+	{
+		if (name !== undefined && address !== undefined && phone !== undefined)
+		{
+			let api = new API();
+			await api.petshop().post("", {name, address, phone});
+			getAllPetshops();
+		}
 	}
 
 	return (
@@ -60,7 +117,7 @@ export default function Search (props)
 					style={styles.button}
 					label="+"
 					onPress={() => {
-						router.push({ pathname: "/create_petshop", params: { id: "123456" } });
+						router.push({ pathname: "/create_petshop", params: { mode: "CREATE" } });
 					}}
 				/>
 				<ScrollView

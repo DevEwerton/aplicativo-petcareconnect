@@ -3,6 +3,9 @@ import { Stack, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { Fragment, useEffect } from "react";
 import "react-native-reanimated";
+import axios from "axios";
+
+axios.defaults.baseURL = "https://petcare-connect-6bfb8-default-rtdb.firebaseio.com/";
 
 SplashScreen.preventAutoHideAsync();
 
