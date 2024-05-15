@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import { StyleSheet, View, Text, ScrollView, Alert } from "react-native";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import Header from "../../components/Header";
 import { COLORS, HEIGHT_HEADER } from "../../constants";
@@ -50,6 +50,8 @@ export default function Search (props)
 
 	async function getAllPetshops ()
 	{
+		console.log("getAllPetshops...");
+
 		let api = new API();
 		let response = await api.petshop().getAll("");
 		let petshops = [];
@@ -72,26 +74,60 @@ export default function Search (props)
 			});
 		}
 
-		console.log("getAllPetshops response: ", response);
 		setPetshops(petshops);
 	}
 
 	async function onEditPetshop (props)
 	{
+		console.log("onEditPetshop...");
+
 		let {id, name, address, phone} = props;
 		router.push({ pathname: "/create_petshop", params: { mode: "UPDATE", idParam: id, nameParam: name, addressParam: address, phoneParam: phone } });
-		console.log("onEditPetshop: ", id);
-		console.log("onEditPetshop: ", name);
 	}
 
 	async function onRemovePetshop (props)
 	{
-		console.log("remove: ", props);
+		console.log("onRemovePetshop...");
+
+		let api = new API();
+		let response = await api.petshop().del("", props.id);
+
+		if (response.code !== 200)
+		{
+			Alert.alert(response.message);
+		}
+		else
+		{
+			getAllPetshops();
+		}
+	}
+
+	async function onConfirmRemovePetshop (props)
+	{
+		console.log("onConfirmRemovePetshop... ");
+
+		Alert.alert(
+			'Confirmação',
+			`Você realmente deseja excluir '${props.name}?'`,
+			[
+				{
+					text: 'Cancelar',
+					onPress: () => {},
+					style: 'cancel',
+				},
+				{
+					text: 'Excluir',
+					onPress: () => onRemovePetshop(props),
+					style: 'cancel',
+				},
+			],
+		  );
 	}
 
 	async function onUpdatePetshop (id, name, address, phone)
 	{
 		console.log("onUpdatePetshop...");
+		
 		let api = new API();
 		let response = await api.petshop().update("", id, {name, address, phone});
 
@@ -133,7 +169,7 @@ export default function Search (props)
 									key={p.id}
 									{...p}
 									onEditPetshop={onEditPetshop}
-									onRemovePetshop={onRemovePetshop}
+									onRemovePetshop={onConfirmRemovePetshop}
 								/>
 							)
 						})

@@ -90,8 +90,6 @@ class API {
                         status.code = 400;
                     })
                     .then(async (res) => {
-                        status.user.avatar = res.data.avatar;
-                        status.user.is_adm = res.data.is_adm;
                         status.user.status = res.data.status;
                         status.user.name = res.data.name;
                         status.user.mail = res.data.mail;
@@ -201,7 +199,31 @@ class API {
             return status;
         }
 
+        // erro's code P400 to P499
+        async function del (token, id)
+        {
+            let status = {
+                code: "",
+                message: "",
+                data: null
+            }
+            
+            await axios.delete(`/petshops/${id}/.json?auth=${token}`)
+            .then(res => {
+                status.code = 200;
+                status.message = "Sucesso!";
+            })
+            .catch(err => {
+                console.log("P400 ", err);
+                status.code = 400;
+                status.message = "Opsssss, tivemos algum problema ao excluir o petshop! Tente fazer o login novamente! (P400)";
+            })
+
+            return status;
+        }
+
         return {
+            del,
             post,
             getAll,
             update

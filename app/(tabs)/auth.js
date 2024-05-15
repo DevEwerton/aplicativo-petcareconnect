@@ -9,6 +9,8 @@ import Input from "../../components/Input";
 
 import brand from "../../assets/images/icon.png";
 
+const API = require("../../api");
+
 const WINDOW_WIDHT = Dimensions.get('window').width;
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
@@ -36,14 +38,26 @@ export default function auth (props)
 	async function onLogout ()
 	{
 		console.log("setting logout...");
+
 		await AsyncStorage.setItem("user-logged", "false");
 	}
 
 	async function onLogin ()
 	{
 		console.log("setting login...");
-		await AsyncStorage.setItem("user-logged", "true");
-		router.push({ pathname: "/", params: { logout: "true" } });
+
+		let api = new API();
+		let response = await api.user().login(mail, password);
+
+		if (response.code === 200)
+		{
+			await AsyncStorage.setItem("user-logged", "true");
+			router.push({ pathname: "/", params: { logout: "true" } });	
+		}
+		else
+		{
+			Alert.alert(response.message);
+		}
 	}
 
 	async function onCreate ()
@@ -58,13 +72,17 @@ export default function auth (props)
 			return;	
 		}
 		
-		//continue...	
-		console.log("n: ", n);
-		console.log("m: ", m);
-		console.log("p: ", p);
+		let api = new API();
+		let response = await api.user().create({mail: m, password: p, name: n});
 
-		Alert.alert("Obaaaaaa");
-
+		if (response.code === 200)
+		{
+			setMode(MODE_LOGIN_VIEW);
+		}
+		else
+		{
+			Alert.alert(response.message);
+		}
 	}
 
 	return (

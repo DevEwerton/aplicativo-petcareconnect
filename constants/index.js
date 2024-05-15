@@ -13,4 +13,4 @@ export const SIZES = {
 };
 export const MODE_LOGIN_VIEW = "MODE_LOGIN_VIEW";
 export const MODE_CREATE_VIEW = "MODE_CREATE_VIEW";
-export const VERSION = "6.0.00";
+export const VERSION = "7.0.00";
