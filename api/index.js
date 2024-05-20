@@ -1,6 +1,6 @@
 import axios from "axios";
 const authBaseURL = "https://www.googleapis.com/identitytoolkit/v3/relyingparty";
-const API_KEY = "AIzaSyAEZ8jm8EOP5vmTmX2n9At666-hQLHvG_I";
+const API_KEY = "XXX";
 
 class API {
 
