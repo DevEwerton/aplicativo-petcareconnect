@@ -1,6 +1,6 @@
 import axios from "axios";
 const authBaseURL = "https://www.googleapis.com/identitytoolkit/v3/relyingparty";
-const API_KEY = "XXX";
+const API_KEY = "AIzaSyB6CcMLthgcPSjEx7L696X4Hoi_gq2gB6I";
 
 class API {
 
@@ -19,6 +19,8 @@ class API {
                 code: "",
                 message: "",
             }
+
+            console.log("user: ", user);
 
             await axios.post(`${authBaseURL}/signupNewUser?key=${API_KEY}`, {
                 email: user.mail,

@@ -5,7 +5,7 @@ import { Fragment, useEffect } from "react";
 import "react-native-reanimated";
 import axios from "axios";
 
-axios.defaults.baseURL = "https://petcare-connect-6bfb8-default-rtdb.firebaseio.com/";
+axios.defaults.baseURL = "https://petshop-reservation-default-rtdb.firebaseio.com/";
 
 SplashScreen.preventAutoHideAsync();
 
