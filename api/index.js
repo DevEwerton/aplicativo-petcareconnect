@@ -19,6 +19,14 @@ class API {
                 code: "",
                 message: "",
             }
+            
+            //model 
+            /* let user = {
+                name: "",//string; "erick dias"
+                mail: "",//string; "erick@mail.com"
+                password: "",//string;"123456";min-length >= 6
+                type: "PET_01",//string;"PET_01" for client or "PET_02" for owner
+            }*/
 
             console.log("user: ", user);
 

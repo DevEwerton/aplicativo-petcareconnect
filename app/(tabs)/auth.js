@@ -6,6 +6,7 @@ import { COLORS, HEIGHT_HEADER, MODE_CREATE_VIEW, MODE_LOGIN_VIEW, SIZES, VERSIO
 import Button from "../../components/Button";
 import Link from "../../components/Link";
 import Input from "../../components/Input";
+import Select from "../../components/Select";
 
 import brand from "../../assets/images/icon.png";
 
@@ -23,6 +24,7 @@ export default function auth (props)
 	const [name, setName] = useState("");
 	const [mail, setMail] = useState("");
 	const [password, setPassword] = useState("");
+	const [type, setType] = useState("");
 
 	useEffect(() => 
 	{
@@ -52,6 +54,7 @@ export default function auth (props)
 		if (response.code === 200)
 		{
 			await AsyncStorage.setItem("user-logged", "true");
+			//await AsyncStorage.setItem("user-type", "PET_01");
 			router.push({ pathname: "/", params: { logout: "true" } });	
 		}
 		else
@@ -65,6 +68,7 @@ export default function auth (props)
 		let n = name;
 		let m = mail;
 		let p = password;
+		let t = type;
 
 		if (n.toString().trim() === "" || m.toString().trim() === "" || p.toString().trim() === "")
 		{
@@ -73,7 +77,7 @@ export default function auth (props)
 		}
 		
 		let api = new API();
-		let response = await api.user().create({mail: m, password: p, name: n});
+		let response = await api.user().create({mail: m, password: p, name: n, type: t});
 
 		if (response.code === 200)
 		{
@@ -143,6 +147,11 @@ export default function auth (props)
 						secureTextEntry={true}
 						onChangeText={(password) => setPassword(password)}
 					/>
+					 <Select
+    					label="Tipo de Usuário"
+    					value={type}
+   						onValueChange={(type) => setType(type)}
+					/>
 					<Button
 						onPress={onCreate}
 						label="cadastrar"
@@ -161,14 +170,9 @@ export default function auth (props)
 const styles = StyleSheet.create({
 	container: {
 		backgroundColor: COLORS.lightOne,
-		flex: 1,
-		display: "flex",
-		textAlign: "center",
-		verticalAlign: "middle",
-		position: "relative",
-		paddingTop: HEIGHT_HEADER,
-		padding: 40,
-		paddingTop: (0.2 * WINDOW_HEIGHT)
+        flexGrow: 1,
+        padding: 20,
+        justifyContent: "center",
 	},
 	line: {
 		width: "100%",
@@ -176,12 +180,12 @@ const styles = StyleSheet.create({
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-		verticalAlign: "middle"
+		verticalAlign: "top"
 	},
 	brand: {
         width: 120,
         height: 120,
-        marginBottom: 30,
+        marginBottom: 20,
     },
 	title: {
 		fontSize: SIZES.title,
@@ -193,7 +197,7 @@ const styles = StyleSheet.create({
 		color: COLORS.primary,
 		position: "absolute",
 		width: WINDOW_WIDHT,
-		bottom: 20,
+		bottom: 15,
 		textAlign: "center",
 	}
 });
