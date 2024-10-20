@@ -103,6 +103,7 @@ class API {
                         status.user.status = res.data.status;
                         status.user.name = res.data.name;
                         status.user.mail = res.data.mail;
+                        status.user.type = res.data.type;
 
                         status.message = "Sucesso!";
                         status.code = 200;                        

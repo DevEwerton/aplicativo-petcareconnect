@@ -22,9 +22,10 @@ export default function auth (props)
 	const { logout } = useLocalSearchParams();
 	const [mode, setMode] = useState(MODE_LOGIN_VIEW)
 	const [name, setName] = useState("");
-	const [mail, setMail] = useState("");
-	const [password, setPassword] = useState("");
+	const [mail, setMail] = useState("ewerton@mail.com");
+	const [password, setPassword] = useState("123456");
 	const [type, setType] = useState("");
+	const optionsTypeUser = [{id: 1, label: "Cliente", value: "PET_01"}, {id: 2, label: "Dono(a) de PetShop", value: "PET_02"}];
 
 	useEffect(() => 
 	{
@@ -53,8 +54,11 @@ export default function auth (props)
 
 		if (response.code === 200)
 		{
+			let {user} = response;
+
 			await AsyncStorage.setItem("user-logged", "true");
-			//await AsyncStorage.setItem("user-type", "PET_01");
+			await AsyncStorage.setItem("user", JSON.stringify(user));
+
 			router.push({ pathname: "/", params: { logout: "true" } });	
 		}
 		else
@@ -69,7 +73,7 @@ export default function auth (props)
 		let m = mail;
 		let p = password;
 		let t = type;
-
+		
 		if (n.toString().trim() === "" || m.toString().trim() === "" || p.toString().trim() === "")
 		{
 			Alert.alert("Opsssss, verifique os campos, e preencha corretamente!");
@@ -150,6 +154,7 @@ export default function auth (props)
 					 <Select
     					label="Tipo de Usuário"
     					value={type}
+						options={optionsTypeUser}
    						onValueChange={(type) => setType(type)}
 					/>
 					<Button

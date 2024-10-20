@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { useEffect } from "react";
 import { useNavigation, useRouter, Tabs, usePathname } from "expo-router";
@@ -23,9 +23,10 @@ export default function TabLayout (props)
 		
 	}, [props]);
 
+
 	async function checkingUserLogged ()
 	{
-		const value = await AsyncStorage.getItem("user-logged");
+		let value = await AsyncStorage.getItem("user-logged");
 
 		console.log("checking the user-logged status: ", value);
 
