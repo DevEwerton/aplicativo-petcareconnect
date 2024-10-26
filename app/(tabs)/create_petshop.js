@@ -7,7 +7,7 @@ import Input from "../../components/Input";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
 
-export default function Search (props)
+export default function CreatePetShop (props)
 {
 	const router = useRouter();
 	const [id, setId] = useState(null);

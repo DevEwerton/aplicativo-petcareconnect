@@ -129,7 +129,7 @@ class API {
     petshop ()
     {
         // erro's code P100 to P199
-        async function getAll (token)
+        async function getAll (token, idUser)
         {
             let status = {
                 code: "",
@@ -137,7 +137,7 @@ class API {
                 data: null
             }
             
-            await axios.get(`/petshops/.json?auth=${token}`)
+            await axios.get(`/petshops/${idUser}.json?auth=${token}`)
             .then(res => {
                 
                 if (res.data)
@@ -157,7 +157,7 @@ class API {
         }
 
         // erro's code P200 to P299
-        async function post (token, data)
+        async function post (token, idUser, data)
         {
             let status = {
                 code: "",
@@ -165,7 +165,7 @@ class API {
                 data: null
             }
             
-            await axios.post(`/petshops/.json?auth=${token}`, {...data})
+            await axios.post(`/petshops/${idUser}/.json?auth=${token}`, {...data})
             .then(res => {
                 
                 if (res.data)
@@ -184,7 +184,7 @@ class API {
         }
 
         // erro's code P300 to P399
-        async function update (token, id, data)
+        async function update (token, id, idUser, data)
         {
             let status = {
                 code: "",
@@ -192,7 +192,7 @@ class API {
                 data: null
             }
             
-            await axios.patch(`/petshops/${id}/.json?auth=${token}`, {...data})
+            await axios.patch(`/petshops/${idUser}/${id}/.json?auth=${token}`, {...data})
             .then(res => {
                 
                 if (res.data)

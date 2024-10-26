@@ -2,7 +2,7 @@ import { StyleSheet, View, Text, ImageBackground, Dimensions, Alert } from "reac
 import { useEffect, useState } from "react";
 import { useRouter, useLocalSearchParams, useNavigation } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { COLORS, HEIGHT_HEADER, MODE_CREATE_VIEW, MODE_LOGIN_VIEW, SIZES, VERSION } from "../../constants";
+import { COLORS, MODE_CREATE_VIEW, MODE_LOGIN_VIEW, SIZES, VERSION } from "../../constants";
 import Button from "../../components/Button";
 import Link from "../../components/Link";
 import Input from "../../components/Input";
@@ -22,7 +22,7 @@ export default function auth (props)
 	const { logout } = useLocalSearchParams();
 	const [mode, setMode] = useState(MODE_LOGIN_VIEW)
 	const [name, setName] = useState("");
-	const [mail, setMail] = useState("ewerton@mail.com");
+	const [mail, setMail] = useState("");
 	const [password, setPassword] = useState("123456");
 	const [type, setType] = useState("");
 	const optionsTypeUser = [{id: 1, label: "Cliente", value: "PET_01"}, {id: 2, label: "Dono(a) de PetShop", value: "PET_02"}];
@@ -42,6 +42,7 @@ export default function auth (props)
 	{
 		console.log("setting logout...");
 
+		await AsyncStorage.setItem("user", JSON.stringify(null));
 		await AsyncStorage.setItem("user-logged", "false");
 	}
 
@@ -74,9 +75,9 @@ export default function auth (props)
 		let p = password;
 		let t = type;
 		
-		if (n.toString().trim() === "" || m.toString().trim() === "" || p.toString().trim() === "")
+		if (n.toString().trim() === "" || m.toString().trim() === "" || p.toString().trim() === "" || t.toString().trim() === "")
 		{
-			Alert.alert("Opsssss, verifique os campos, e preencha corretamente!");
+			Alert.alert("Opsssss, verifique os campos, e preencha-os corretamente!");
 			return;	
 		}
 		

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View, Text, ScrollView, Alert } from "react-native";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
-import Header from "../../components/Header";
 import { COLORS, HEIGHT_HEADER } from "../../constants";
-import Button from "../../components/Button";
 import { ItemListPetshop } from "../../components/ItemListPetshop";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import Header from "../../components/Header";
+import Button from "../../components/Button";
 
 const API = require("../../api");
 
@@ -25,14 +27,16 @@ const PETSHOPS = [
 
 export default function Search (props)
 {
-	const router = useRouter();	const navigation = useNavigation();
+	const router = useRouter();	
+	const navigation = useNavigation();
 	const [petshops, setPetshops] = useState([])
 	const { id, name, address, phone, action } = useLocalSearchParams();
+	const [user, setUser] = useState(null);
 
 	useEffect(() => 
 	{
 		navigation.addListener('beforeRemove', (e) => {
-			console.log('onBack pressioned on Auth view...');
+			console.log('onBack pressioned on index view...');
 			e.preventDefault();
 		});
 
@@ -45,20 +49,30 @@ export default function Search (props)
 		if (action === "UPDATED") { onUpdatePetshop(id, name, address, phone); }
 		
 		getAllPetshops();
+		checkingUserLogged();
 		
 	}, [props]);
+
+	async function checkingUserLogged ()
+	{
+		let user = await AsyncStorage.getItem("user");
+		user = JSON.parse(user);
+		setUser(user);
+
+		console.log("user (index view): ");
+	}
 
 	async function getAllPetshops ()
 	{
 		console.log("getAllPetshops...");
 
 		let api = new API();
-		let response = await api.petshop().getAll("");
+		let response = await api.petshop().getAll("", user.id_user);
 		let petshops = [];
 
 		if (response.code === 200)
 		{
-			let data = response.data;	
+			let data = response.data;
 			
 			Object.keys(data).forEach(k => {
 				let petshop = data[k];
@@ -129,7 +143,7 @@ export default function Search (props)
 		console.log("onUpdatePetshop...");
 		
 		let api = new API();
-		let response = await api.petshop().update("", id, {name, address, phone});
+		let response = await api.petshop().update("", id, user.id_user, {name, address, phone});
 
 		if (response.code === 200) { getAllPetshops(); }
 	}
@@ -139,7 +153,7 @@ export default function Search (props)
 		if (name !== undefined && address !== undefined && phone !== undefined)
 		{
 			let api = new API();
-			await api.petshop().post("", {name, address, phone});
+			await api.petshop().post("", user.id_user, {name, address, phone});
 			getAllPetshops();
 		}
 	}
@@ -149,13 +163,16 @@ export default function Search (props)
 			<Header />
 			<View style={styles.body}>
 				<Text style={styles.title}>Petshops</Text>
-				<Button
-					style={styles.button}
-					label="+"
-					onPress={() => {
-						router.push({ pathname: "/create_petshop", params: { mode: "CREATE" } });
-					}}
-				/>
+				{
+					user?.type === "PET_02" &&
+					<Button
+						style={styles.button}
+						label="+"
+						onPress={() => {
+							router.push({ pathname: "/create_petshop", params: { mode: "CREATE" } });
+						}}
+					/>
+				}
 				<ScrollView
 					style={styles.scrollView}
 					contentContainerStyle={{alignItems: "center"}}

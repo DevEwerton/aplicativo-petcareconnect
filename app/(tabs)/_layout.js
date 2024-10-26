@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { useEffect } from "react";
 import { useNavigation, useRouter, Tabs, usePathname } from "expo-router";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default function TabLayout (props) 
 {
@@ -12,13 +14,13 @@ export default function TabLayout (props)
 
 	useEffect(() => 
 	{
-		navigation.addListener('beforeRemove', (e) => {
-			console.log('onBack pressioned on Auth view...');
+		navigation.addListener("beforeRemove", (e) => {
+			console.log("onBack pressioned on _layout view...");
 			e.preventDefault();
 		});
 		
-		console.log("path: ", path);
-
+		console.log("path _layout: ", path);
+		
 		checkingUserLogged();
 		
 	}, [props]);
@@ -45,7 +47,7 @@ export default function TabLayout (props)
 					tabBarStyle: {
 						height: 85,
 						backgroundColor: "#BAD36D",
-						display: usePathname() === '/auth' ? 'none' : 'flex',
+						display: usePathname() === "/auth" ? "none" : "flex",
 					},
 					tabBarLabelStyle: {
 						fontSize: 14,
@@ -59,28 +61,28 @@ export default function TabLayout (props)
 				name="index"
 				options={{
 					title: "Buscar",
-					tabBarIcon: ({ color, focused }) => ( <TabBarIcon name={"search"} color={focused ? "#000000" : "#949494"} />),
+					tabBarIcon: ({ color, focused }) => ( <FontAwesome5 name={"search"} size={23} color={focused ? "#000000" : "#949494"} />),
 				}}
 			/>
 			<Tabs.Screen
 				name="reservations"
 				options={{
 					title: "Reservas",
-					tabBarIcon: ({ color, focused }) => ( <TabBarIcon name={"calendar"} color={focused ? "#000000" : "#949494"} /> ),
+					tabBarIcon: ({ color, focused }) => ( <FontAwesome5 name={"calendar"} size={23} color={focused ? "#000000" : "#949494"} /> ),
 				}}
 			/>
 			<Tabs.Screen
 				name="animals"
 				options={{
 					title: "Animais",
-					tabBarIcon: ({ color, focused }) => ( <TabBarIcon name={"paw"} color={focused ? "#000000" : "#949494"} /> ),
+					tabBarIcon: ({ color, focused }) => ( <FontAwesome5 name={"paw"} size={23} color={focused ? "#000000" : "#949494"} /> ),
 				}}
 			/>
 			<Tabs.Screen
-				name="home"
+				name="profile"
 				options={{
-					title: "Início",
-					tabBarIcon: ({ color, focused }) => ( <TabBarIcon name={"home"} color={focused ? "#000000" : "#949494"} /> ),
+					title: "Perfil",
+					tabBarIcon: ({ color, focused }) => ( <FontAwesome5 name={"user"} size={23} color={focused ? "#000000" : "#949494"} /> ),
 				}}
 			/>
 			<Tabs.Screen
