@@ -60,7 +60,13 @@ export default function auth (props)
 			await AsyncStorage.setItem("user-logged", "true");
 			await AsyncStorage.setItem("user", JSON.stringify(user));
 
-			router.push({ pathname: "/", params: { logout: "true" } });	
+			router.push({ pathname: "/", params: { 
+					logout: "true", 
+					idUser: user.id_user, 
+					nameUser: user.name,
+					typeUser: user.type
+				}
+			});	
 		}
 		else
 		{
@@ -110,7 +116,7 @@ export default function auth (props)
 						label="E-mail"
 						placeholder="maria@mail.com"
 						value={mail}
-						onChangeText={(mail) => setMail(mail)}
+						onChangeText={(mail) => setMail(mail.toString().toLowerCase())}
 					/>
 					<Input
 						label="Senha"

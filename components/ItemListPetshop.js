@@ -17,11 +17,14 @@ export function ItemListPetshop (props)
                     <Text style={styles.title}>{props.name}</Text>
                     <Text style={styles.address}>{props.address}</Text>
                     <Text style={styles.phone}>{props.phone}</Text>
-                    <Button
-                        label="..."
-                        style={styles.buttonShowOptions}
-                        onPress={() => setShowOptions(!showOptions)}
-                    />
+                    {
+                        props.options &&
+                        <Button
+                            label="..."
+                            style={styles.buttonShowOptions}
+                            onPress={() => setShowOptions(!showOptions)}
+                        />
+                    }
                     {
                         showOptions &&
                         <View style={styles.options}>

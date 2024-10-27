@@ -25,13 +25,14 @@ const PETSHOPS = [
 	},
 ]
 
+var control = 0;
+
 export default function Search (props)
 {
 	const router = useRouter();	
 	const navigation = useNavigation();
 	const [petshops, setPetshops] = useState([])
-	const { id, name, address, phone, action } = useLocalSearchParams();
-	const [user, setUser] = useState(null);
+	const { id, idUser, nameUser, typeUser, name, address, phone, action } = useLocalSearchParams();
 
 	useEffect(() => 
 	{
@@ -40,6 +41,9 @@ export default function Search (props)
 			e.preventDefault();
 		});
 
+		console.log("idUser: ", idUser);
+		console.log("nameUser: ", nameUser);
+		console.log("typeUser: ", typeUser);
 		console.log("name: ", name);
 		console.log("address: ", address);
 		console.log("phone: ", phone);
@@ -47,48 +51,77 @@ export default function Search (props)
 
 		if (action === "CREATE") { onCreatePetshop(name, address, phone); }
 		if (action === "UPDATED") { onUpdatePetshop(id, name, address, phone); }
-		
+
 		getAllPetshops();
-		checkingUserLogged();
-		
+
 	}, [props]);
-
-	async function checkingUserLogged ()
-	{
-		let user = await AsyncStorage.getItem("user");
-		user = JSON.parse(user);
-		setUser(user);
-
-		console.log("user (index view): ");
-	}
 
 	async function getAllPetshops ()
 	{
 		console.log("getAllPetshops...");
+		console.log("getting petshops by user: ", nameUser);
 
 		let api = new API();
-		let response = await api.petshop().getAll("", user.id_user);
-		let petshops = [];
-
-		if (response.code === 200)
+		let petshopsScreen = [];
+		
+		if (typeUser === "PET_01") //client
 		{
-			let data = response.data;
-			
-			Object.keys(data).forEach(k => {
-				let petshop = data[k];
+			let response = await api.petshop().getAll("");
 
-				petshops.push(
-					{
-						id: k,
-						name: petshop.name,
-						address: petshop.address,
-						phone: petshop.phone
-					}
-				);
-			});
+			if (response.code === 200)
+			{
+				let data = response.data;
+				
+				if (data)
+				{
+					Object.keys(data).forEach(ku => { //ku = key user
+						let petshops = data[ku];
+
+						if (petshops)
+						{
+							Object.keys(petshops).forEach(kp => {// kp = key petshop
+								let data = petshops[kp];
+								let unit = {
+									id: kp,
+									idOwner: ku,
+									name: data.name,
+									address: data.address,
+									phone: data.phone
+								};
+								petshopsScreen.push(unit);
+							});
+						}
+					});
+				}
+			}
+		}
+		else
+		{
+			let response = await api.petshop().getByUser("", idUser);
+
+			if (response.code === 200)
+			{
+				let data = response.data;
+
+				if (data)
+				{
+					Object.keys(data).forEach(kp => {//kp = key petshop
+						let petshop = data[kp];
+
+						let unit = {
+							id: kp,
+							idOwner: idUser,
+							name: petshop.name,
+							address: petshop.address,
+							phone: petshop.phone
+						};
+						petshopsScreen.push(unit);
+					});
+				}
+			}
 		}
 
-		setPetshops(petshops);
+		setPetshops(petshopsScreen);
 	}
 
 	async function onEditPetshop (props)
@@ -96,7 +129,14 @@ export default function Search (props)
 		console.log("onEditPetshop...");
 
 		let {id, name, address, phone} = props;
-		router.push({ pathname: "/create_petshop", params: { mode: "UPDATE", idParam: id, nameParam: name, addressParam: address, phoneParam: phone } });
+		router.push({ pathname: "/create_petshop", params: { 
+				mode: "UPDATE",
+				idParam: id,
+				nameParam: name,
+				addressParam: address,
+				phoneParam: phone 
+			}
+		});
 	}
 
 	async function onRemovePetshop (props)
@@ -164,7 +204,7 @@ export default function Search (props)
 			<View style={styles.body}>
 				<Text style={styles.title}>Petshops</Text>
 				{
-					user?.type === "PET_02" &&
+					typeUser === "PET_02" &&
 					<Button
 						style={styles.button}
 						label="+"
@@ -187,6 +227,7 @@ export default function Search (props)
 									{...p}
 									onEditPetshop={onEditPetshop}
 									onRemovePetshop={onConfirmRemovePetshop}
+									options={(p.idOwner === idUser)}
 								/>
 							)
 						})

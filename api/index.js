@@ -129,7 +129,7 @@ class API {
     petshop ()
     {
         // erro's code P100 to P199
-        async function getAll (token, idUser)
+        async function getAll (token)
         {
             let status = {
                 code: "",
@@ -137,7 +137,7 @@ class API {
                 data: null
             }
             
-            await axios.get(`/petshops/${idUser}.json?auth=${token}`)
+            await axios.get(`/petshops/.json?auth=${token}`)
             .then(res => {
                 
                 if (res.data)
@@ -233,11 +233,40 @@ class API {
             return status;
         }
 
+        // erro's code P100 to P199
+        async function getByUser(token, idUser)
+        {
+            let status = {
+                code: "",
+                message: "",
+                data: null
+            }
+            
+            await axios.get(`/petshops/${idUser}.json?auth=${token}`)
+            .then(res => {
+                
+                if (res.data)
+                {
+                    status.code = 200;
+                    status.message = "Sucesso!";
+                    status.data = res.data;
+                }
+            })
+            .catch(err => {
+                console.log("P100 ", err);
+                status.code = 400;
+                status.message = "Opsssss, tivemos algum problema ao recuperar os petshops! Tente fazer o login novamente! (P100)";
+            })
+
+            return status;
+        }
+
         return {
             del,
             post,
             getAll,
-            update
+            update,
+            getByUser,
         }
     }
 }
