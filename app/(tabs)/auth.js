@@ -149,7 +149,7 @@ export default function auth (props)
 						label="E-mail"
 						placeholder="maria@mail.com"
 						value={mail}
-						onChangeText={(mail) => setMail(mail)}
+						onChangeText={(mail) => setMail(mail.toString().toLowerCase())}
 					/>
 					<Input
 						label="Senha"

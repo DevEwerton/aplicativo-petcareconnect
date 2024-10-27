@@ -15,8 +15,14 @@ export function ItemListPetshop (props)
                 </View>
                 <View style={styles.colTwo}>
                     <Text style={styles.title}>{props.name}</Text>
-                    <Text style={styles.address}>{props.address}</Text>
-                    <Text style={styles.phone}>{props.phone}</Text>
+                    <Text style={styles.subtitle}>{props.address}</Text>
+                    <Text style={styles.subtitle}>Telefone: {props.phone}</Text>
+                    <Text style={styles.subtitle}>Serviços oferecidos:</Text>
+                    {props.statusService1 === "true" && <Text style={styles.subtitle}>Banho & Tosa:</Text>}
+                    {props.statusService1 === "true" && <Text style={styles.subtitle}>{props.intervalPriceService1}</Text>}
+                    {props.statusService2 === "true" && <Text style={styles.subtitle}>Médico Veterinário:</Text>}
+                    {props.statusService2 === "true" && <Text style={styles.subtitle}>{props.intervalPriceService2}</Text>}
+                    <Text style={styles.subtitle}>Horário de funcionamento: {props.intervalWorks}</Text>
                     {
                         props.options &&
                         <Button
@@ -55,7 +61,7 @@ export function ItemListPetshop (props)
 
 const styles = StyleSheet.create({
     container: {
-        minHeight: 120,
+        minHeight: 220,
         width: "100%",
         display: "flex",
         flexDirection: "row",
@@ -86,12 +92,7 @@ const styles = StyleSheet.create({
         color: COLORS.darkTwo,
         fontWeight: "600"
     },
-    address: {
-        fontSize: SIZES.subtitle,
-        color: COLORS.darkTwo,
-        fontWeight: "400",        
-    },
-    phone: {
+    subtitle: {
         fontSize: SIZES.subtitle,
         color: COLORS.darkTwo,
         fontWeight: "400",        

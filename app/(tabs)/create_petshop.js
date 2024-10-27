@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, View, Text, Alert } from "react-native";
+import { StyleSheet, View, Text, Alert, ScrollView } from "react-native";
 import { COLORS, HEIGHT_HEADER, SIZES } from "../../constants";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
 import Input from "../../components/Input";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
+import Check from "../../components/Check";
 
 export default function CreatePetShop (props)
 {
@@ -16,11 +17,17 @@ export default function CreatePetShop (props)
 	const [phone, setPhone] = useState("");
 	const [intervalWorks, setIntervalWorks] = useState("");
 	const [documentCompany, setDocumentCompany] = useState("");
+	const [statusService1, setStatusService1] = useState(false);
+	const [intervalPriceService1, setIntervalPriceService1] = useState("");
+	const [statusService2, setStatusService2] = useState(false);
+	const [intervalPriceService2, setIntervalPriceService2] = useState("");
 	const [modeView, setModeView] = useState("CREATE");
-	const { mode, idParam, nameParam, addressParam, phoneParam } = useLocalSearchParams();
+	const { mode, idUser, idParam, nameParam, addressParam, phoneParam } = useLocalSearchParams();
 
 	useEffect(() => 
 	{
+		console.log("idUser: ", idUser);
+
 		if (mode === "UPDATE") 
 		{ 
 			onEdit(idParam, nameParam, addressParam, phoneParam);
@@ -41,16 +48,36 @@ export default function CreatePetShop (props)
 
 	async function onSave ()
 	{
-		if (name.toString().trim() === "" || address.toString().trim() === "" || phone.toString().trim() === "")
+		if
+		(
+			name.toString().trim() === "" || 
+			address.toString().trim() === "" || 
+			phone.toString().trim() === "" ||
+			intervalWorks.toString().trim() === "" ||
+			documentCompany.toString().trim() === "" 
+		)
 		{ 
 			Alert.alert("Opsssss, preencha os campos corretamente!"); 
 			return;
 		}
 
+		if (!statusService1 && !statusService2)
+		{
+			Alert.alert("Opsssss, escolha pelo menos um serviço!"); 
+			return;
+		}
+
 		let params = {
+			idUser,
 			name,
 			address,
-			phone
+			phone,
+			intervalWorks,
+			documentCompany,
+			statusService1,
+			intervalPriceService1,
+			statusService2,
+			intervalPriceService2
 		};
 		let action = "CREATE";
 
@@ -66,53 +93,82 @@ export default function CreatePetShop (props)
 		setName("");
 		setAddress("");
 		setPhone("");
+		setIntervalWorks("");
+		setDocumentCompany("");
+		statusService1(false);
+		setIntervalPriceService1("");
+		statusService2(false);
+		setIntervalPriceService2("");
 		setModeView("CREATE");
 	}
 
 	return (
 		<View style={styles.container}>
 			<Header />
-			<View style={styles.body}>
-				<Text style={styles.title}>Cadastrar Petshop</Text>
-				<Input
-					label="Nome"
-					value={name}
-					placeholder="Cãopeão"
-					onChangeText={(name) => setName(name)}
-				/>
-				<Input
-					label="Endereço"
-					value={address}
-					placeholder="Rua Santos Domingos, 444, JD. das Palmeiras"
-					onChangeText={(address) => setAddress(address)}
-				/>
-				<Input
-					label="Telefone"
-					value={phone}
-					placeholder="(11) 2222-3333"
-					onChangeText={(phone) => setPhone(phone)}
-				/>
-				<Input
-					label="Horário de Funcionamento"
-					value={intervalWorks}
-					placeholder="08:00 - 19:00"
-					onChangeText={(intervalWorks) => setIntervalWorks(intervalWorks)}
-				/>
-				<Input
-					label="CNPJ"
-					value={documentCompany}
-					placeholder="40.244.777/0001-00"
-					onChangeText={(documentCompany) => setDocumentCompany(documentCompany)}
-				/>
-				<View style={styles.viewGroup}>
-					<Text style={styles.labelGroup}>Tipos de Serviços</Text>
-					<Text style={styles.labelGroup}>...</Text>
+			<ScrollView style={styles.scrollView}>
+				<View style={styles.body}>
+					<Text style={styles.title}>Cadastrar Petshop</Text>
+					<Input
+						label="Nome"
+						value={name}
+						placeholder="Cãopeão"
+						onChangeText={(name) => setName(name)}
+					/>
+					<Input
+						label="Endereço"
+						value={address}
+						placeholder="Rua Santos Domingos, 444, JD. das Palmeiras"
+						onChangeText={(address) => setAddress(address)}
+					/>
+					<Input
+						label="Telefone"
+						value={phone}
+						placeholder="(11) 2222-3333"
+						onChangeText={(phone) => setPhone(phone)}
+					/>
+					<Input
+						label="Horário de Funcionamento"
+						value={intervalWorks}
+						placeholder="08:00 - 19:00"
+						onChangeText={(intervalWorks) => setIntervalWorks(intervalWorks)}
+					/>
+					<Input
+						label="CNPJ"
+						value={documentCompany}
+						placeholder="40.244.777/0001-00"
+						onChangeText={(documentCompany) => setDocumentCompany(documentCompany)}
+					/>
+					<View style={styles.viewGroup}>
+						<Text style={styles.labelGroup}>Tipos de Serviços</Text>
+						<Check checked={statusService1} label="Banho & Tosa" onToggle={() => setStatusService1(!statusService1)} />
+						{
+							statusService1 &&
+							<Input
+								styleInput={{width: "40%"}}
+								label="Intervalo de Valores (Banho & Tosa)"
+								value={intervalPriceService1}
+								placeholder="50,00 a 120,00"
+								onChangeText={(intervalPriceService1) => setIntervalPriceService1(intervalPriceService1)}
+							/>
+						}
+						<Check checked={statusService2} label="Médico Veterinário" onToggle={() => setStatusService2(!statusService2)} />
+						{
+							statusService2 &&
+							<Input
+								styleInput={{width: "40%"}}
+								label="Intervalo de Valores (Médico Veterinário)"
+								value={intervalPriceService2}
+								placeholder="500,00 a 1.200,00"
+								onChangeText={(intervalPriceService2) => setIntervalPriceService2(intervalPriceService2)}
+							/>
+						}
+					</View>
+					<Button
+						onPress={onSave}
+						label={`${modeView === "CREATE" ? "cadastrar" : "atualizar"}`}
+					/>
 				</View>
-				<Button
-					onPress={onSave}
-					label={`${modeView === "CREATE" ? "cadastrar" : "atualizar"}`}
-				/>
-			</View>
+			</ScrollView>
 		</View>
 	);
 }

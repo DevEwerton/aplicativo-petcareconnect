@@ -23,16 +23,29 @@ const PETSHOPS = [
 		address: "Rua da oliveiras, 45, JD América",
 		phone: "(11) 2334-4455"
 	},
-]
-
-var control = 0;
+];
 
 export default function Search (props)
 {
 	const router = useRouter();	
 	const navigation = useNavigation();
 	const [petshops, setPetshops] = useState([])
-	const { id, idUser, nameUser, typeUser, name, address, phone, action } = useLocalSearchParams();
+	const { 
+		id,
+		idUser,
+		nameUser,
+		typeUser,
+		name,
+		address,
+		phone,
+		intervalWorks,
+		documentCompany,
+		statusService1,
+		intervalPriceService1,
+		statusService2,
+		intervalPriceService2,
+		action
+	} = useLocalSearchParams();
 
 	useEffect(() => 
 	{
@@ -45,12 +58,18 @@ export default function Search (props)
 		console.log("nameUser: ", nameUser);
 		console.log("typeUser: ", typeUser);
 		console.log("name: ", name);
-		console.log("address: ", address);
-		console.log("phone: ", phone);
+		// console.log("address: ", address);
+		// console.log("phone: ", phone);
+		// console.log("intervalWorks: ", intervalWorks);
+		// console.log("documentCompany: ", documentCompany);
+		// console.log("statusService1: ", statusService1);
+		// console.log("intervalPriceService1: ", intervalPriceService1);
+		// console.log("statusService2: ", statusService2);
+		// console.log("intervalPriceService2: ", intervalPriceService2);
 		console.log("action: ", action);
 
-		if (action === "CREATE") { onCreatePetshop(name, address, phone); }
-		if (action === "UPDATED") { onUpdatePetshop(id, name, address, phone); }
+		if (action === "CREATE") { onCreatePetshop(name, address, phone, intervalWorks, documentCompany, statusService1, intervalPriceService1, statusService2, intervalPriceService2); }
+		if (action === "UPDATED") { onUpdatePetshop(name, address, phone); }
 
 		getAllPetshops();
 
@@ -86,7 +105,13 @@ export default function Search (props)
 									idOwner: ku,
 									name: data.name,
 									address: data.address,
-									phone: data.phone
+									phone: data.phone,
+									documentCompany: data.documentCompany,
+									intervalPriceService1: data.intervalPriceService1,
+									intervalPriceService2: data.intervalPriceService2,
+									intervalWorks: data.intervalWorks,
+									statusService1: data.statusService1,
+									statusService2: data.statusService2,
 								};
 								petshopsScreen.push(unit);
 							});
@@ -113,7 +138,13 @@ export default function Search (props)
 							idOwner: idUser,
 							name: petshop.name,
 							address: petshop.address,
-							phone: petshop.phone
+							phone: petshop.phone,
+							documentCompany: petshop.documentCompany,
+							intervalPriceService1: petshop.intervalPriceService1,
+							intervalPriceService2: petshop.intervalPriceService2,
+							intervalWorks: petshop.intervalWorks,
+							statusService1: petshop.statusService1,
+							statusService2: petshop.statusService2,
 						};
 						petshopsScreen.push(unit);
 					});
@@ -188,12 +219,23 @@ export default function Search (props)
 		if (response.code === 200) { getAllPetshops(); }
 	}
 
-	async function onCreatePetshop (name, address, phone)
+	async function onCreatePetshop (name, address, phone, intervalWorks, documentCompany, statusService1, intervalPriceService1, statusService2, intervalPriceService2)
 	{
 		if (name !== undefined && address !== undefined && phone !== undefined)
 		{
 			let api = new API();
-			await api.petshop().post("", user.id_user, {name, address, phone});
+			let data = {
+				name,
+				address,
+				phone,
+				intervalWorks,
+				documentCompany,
+				statusService1,
+				intervalPriceService1,
+				statusService2,
+				intervalPriceService2
+			};
+			await api.petshop().post("", idUser, data);
 			getAllPetshops();
 		}
 	}
@@ -209,7 +251,7 @@ export default function Search (props)
 						style={styles.button}
 						label="+"
 						onPress={() => {
-							router.push({ pathname: "/create_petshop", params: { mode: "CREATE" } });
+							router.push({ pathname: "/create_petshop", params: { mode: "CREATE", idUser } });
 						}}
 					/>
 				}

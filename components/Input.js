@@ -5,10 +5,10 @@ import { COLORS, SIZES } from "../constants";
 export default function Input (props)
 {
     return (
-        <View style={styles.container}>
+        <View style={[styles.container]}>
             <Text style={styles.label}>{props.label}</Text>
             <TextInput 
-                style={styles.input}
+                style={[styles.input, {...props?.styleInput}]}
                 {...props}
             />
         </View>
@@ -17,13 +17,12 @@ export default function Input (props)
 
 const styles = StyleSheet.create({
     container: {
-        minWidth: 200,
         marginHorizontal: 10,
     },
     input: {
+        width: "100%",
         borderWidth: 2,
         borderColor: COLORS.primary,
-        width: "100%",
         minHeight: 60,
         marginBottom: 20,
         paddingLeft: 10,

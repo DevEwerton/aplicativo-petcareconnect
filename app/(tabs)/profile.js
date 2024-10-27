@@ -8,11 +8,11 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
 
-var control = 0;
+var ID_CURRENT_USER = "";
 
 export default function home (props)
 {	
-	const router = useRouter();	
+	const router = useRouter();
 	const [user, setUser] = useState(null);
 	const optionsTypeUser = [{id: 1, label: "Cliente", value: "PET_01"}, {id: 2, label: "Dono(a)", value: "PET_02"}];
 
@@ -30,13 +30,16 @@ export default function home (props)
 
 	async function checkingUserLogged ()
 	{
-		control++;
-
 		let user = await AsyncStorage.getItem("user");
 		user = JSON.parse(user);
-		if (user) { setUser(user); }
 
-		console.log(control + " user (profile view): ", user?.name);
+		if (user && user.id_user !== ID_CURRENT_USER)
+		{
+			ID_CURRENT_USER = user.id_user;
+			await setUser(user);
+
+			console.log("(profile view) user: ", user.name);
+		}
 	}
 
 	return (
