@@ -11,6 +11,7 @@ import Check from "../../components/Check";
 export default function CreatePetShop (props)
 {
 	const router = useRouter();
+	const [idOwner, setIdOwner] = useState("");
 	const [id, setId] = useState(null);
 	const [name, setName] = useState("");
 	const [address, setAddress] = useState("");
@@ -22,7 +23,7 @@ export default function CreatePetShop (props)
 	const [statusService2, setStatusService2] = useState(false);
 	const [intervalPriceService2, setIntervalPriceService2] = useState("");
 	const [modeView, setModeView] = useState("CREATE");
-	const { mode, idUser, idParam, nameParam, addressParam, phoneParam } = useLocalSearchParams();
+	const { mode, idUser, idParam, nameParam, addressParam, phoneParam, documentCompanyParam, idOwnerParam, intervalPriceService1Param, intervalPriceService2Param, intervalWorksParam, statusService1Param, statusService2Param} = useLocalSearchParams();
 
 	useEffect(() => 
 	{
@@ -30,20 +31,27 @@ export default function CreatePetShop (props)
 
 		if (mode === "UPDATE") 
 		{ 
-			onEdit(idParam, nameParam, addressParam, phoneParam);
+			onEdit(idParam, nameParam, addressParam, phoneParam, documentCompanyParam, idOwnerParam, intervalPriceService1Param, intervalPriceService2Param, intervalWorksParam, statusService1Param, statusService2Param);
 			setModeView("UPDATE");
 		}
 		
 	}, [props]);
 
-	async function onEdit (idParam, nameParam, addressParam, phoneParam)
+	async function onEdit (idParam, nameParam, addressParam, phoneParam, documentCompanyParam, idOwnerParam, intervalPriceService1Param, intervalPriceService2Param, intervalWorksParam, statusService1Param, statusService2Param)
 	{
 		console.log("onPrepareEdit...");
 		
+		setIdOwner(idOwnerParam);
 		setId(idParam);
 		setName(nameParam);
 		setAddress(addressParam);
 		setPhone(phoneParam);
+		setIntervalWorks(intervalWorksParam);
+		setDocumentCompany(documentCompanyParam);
+		setStatusService1(statusService1Param);
+		setIntervalPriceService1(intervalPriceService1Param);
+		setStatusService2(statusService2Param);
+		setIntervalPriceService2(intervalPriceService2Param);
 	}
 
 	async function onSave ()
@@ -83,21 +91,23 @@ export default function CreatePetShop (props)
 
 		if (modeView === "UPDATE") 
 		{ 
+			params.idOwner = idOwner;
 			params.id = id;
 			action = "UPDATED";
 		}
 
 		router.push({ pathname: "/", params: { ...params, action } });
 
+		setIdOwner("");
 		setId(null);
 		setName("");
 		setAddress("");
 		setPhone("");
 		setIntervalWorks("");
 		setDocumentCompany("");
-		statusService1(false);
+		setStatusService1(false);
 		setIntervalPriceService1("");
-		statusService2(false);
+		setStatusService2(false);
 		setIntervalPriceService2("");
 		setModeView("CREATE");
 	}

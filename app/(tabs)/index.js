@@ -9,7 +9,6 @@ import Header from "../../components/Header";
 import Button from "../../components/Button";
 
 const API = require("../../api");
-
 const PETSHOPS = [
 	{
 		id: 1,
@@ -25,12 +24,16 @@ const PETSHOPS = [
 	},
 ];
 
+var ID_CURRENT_USER = null;
+
 export default function Search (props)
 {
 	const router = useRouter();	
 	const navigation = useNavigation();
-	const [petshops, setPetshops] = useState([])
-	const { 
+	const [petshops, setPetshops] = useState([]);
+	const [user, setUser] = useState(null);
+	const {
+		idOwner,
 		id,
 		idUser,
 		nameUser,
@@ -49,41 +52,36 @@ export default function Search (props)
 
 	useEffect(() => 
 	{
-		navigation.addListener('beforeRemove', (e) => {
-			console.log('onBack pressioned on index view...');
-			e.preventDefault();
-		});
-
-		console.log("idUser: ", idUser);
-		console.log("nameUser: ", nameUser);
-		console.log("typeUser: ", typeUser);
-		console.log("name: ", name);
-		// console.log("address: ", address);
-		// console.log("phone: ", phone);
-		// console.log("intervalWorks: ", intervalWorks);
-		// console.log("documentCompany: ", documentCompany);
-		// console.log("statusService1: ", statusService1);
-		// console.log("intervalPriceService1: ", intervalPriceService1);
-		// console.log("statusService2: ", statusService2);
-		// console.log("intervalPriceService2: ", intervalPriceService2);
-		console.log("action: ", action);
-
-		if (action === "CREATE") { onCreatePetshop(name, address, phone, intervalWorks, documentCompany, statusService1, intervalPriceService1, statusService2, intervalPriceService2); }
-		if (action === "UPDATED") { onUpdatePetshop(name, address, phone); }
-
+		setInterval(checkingUserLogged, 1000);
 		getAllPetshops();
 
-	}, [props]);
+		if (action === "CREATE") { onCreatePetshop(name, address, phone, intervalWorks, documentCompany, statusService1, intervalPriceService1, statusService2, intervalPriceService2); }
+		if (action === "UPDATED") { onUpdatePetshop(idOwner, id, name, address, phone, intervalWorks, documentCompany, statusService1, intervalPriceService1, statusService2, intervalPriceService2); }
+
+	}, [props, user]);
+
+	async function checkingUserLogged ()
+	{
+		let user = await AsyncStorage.getItem("user");
+		user = JSON.parse(user);
+
+		if (user && user.id_user !== ID_CURRENT_USER)
+		{
+			console.log(`(index view) start checkingUserLogged: ${user?.id_user}, nameUser: ${user?.name}`);
+
+			ID_CURRENT_USER = user.id_user;
+			setUser(user);
+		}
+	}
 
 	async function getAllPetshops ()
 	{
-		console.log("getAllPetshops...");
-		console.log("getting petshops by user: ", nameUser);
+		console.log(`(index view) getAllPetshops idUser: ${user?.id_user}, nameUser: ${user?.name}`);
 
 		let api = new API();
 		let petshopsScreen = [];
 		
-		if (typeUser === "PET_01") //client
+		if (user.type === "PET_01") //client
 		{
 			let response = await api.petshop().getAll("");
 
@@ -122,7 +120,7 @@ export default function Search (props)
 		}
 		else
 		{
-			let response = await api.petshop().getByUser("", idUser);
+			let response = await api.petshop().getByUser("", user.id_user);
 
 			if (response.code === 200)
 			{
@@ -135,7 +133,7 @@ export default function Search (props)
 
 						let unit = {
 							id: kp,
-							idOwner: idUser,
+							idOwner: user.id_user,
 							name: petshop.name,
 							address: petshop.address,
 							phone: petshop.phone,
@@ -157,25 +155,44 @@ export default function Search (props)
 
 	async function onEditPetshop (props)
 	{
-		console.log("onEditPetshop...");
+		console.log(`(index view) onEditPetshop`);
 
-		let {id, name, address, phone} = props;
+		let {id,
+			name,
+			address,
+			phone,
+			documentCompany,
+			idOwner,
+			intervalPriceService1,
+			intervalPriceService2,
+			intervalWorks,
+			statusService1,
+			statusService2
+		} = props;
+
 		router.push({ pathname: "/create_petshop", params: { 
 				mode: "UPDATE",
 				idParam: id,
 				nameParam: name,
 				addressParam: address,
-				phoneParam: phone 
+				phoneParam: phone,
+				documentCompanyParam: documentCompany,
+				idOwnerParam: idOwner,
+				intervalPriceService1Param: intervalPriceService1,
+				intervalPriceService2Param: intervalPriceService2,
+				intervalWorksParam: intervalWorks,
+				statusService1Param: statusService1,
+				statusService2Param: statusService2,
 			}
 		});
 	}
 
 	async function onRemovePetshop (props)
 	{
-		console.log("onRemovePetshop...");
+		console.log(`(index view) onRemovePetshop`);
 
 		let api = new API();
-		let response = await api.petshop().del("", props.id);
+		let response = await api.petshop().del("", props.idOwner, props.id);
 
 		if (response.code !== 200)
 		{
@@ -189,7 +206,7 @@ export default function Search (props)
 
 	async function onConfirmRemovePetshop (props)
 	{
-		console.log("onConfirmRemovePetshop... ");
+		console.log(`(index view) onConfirmRemovePetshop`);
 
 		Alert.alert(
 			'Confirmação',
@@ -206,21 +223,23 @@ export default function Search (props)
 					style: 'cancel',
 				},
 			],
-		  );
+		);
 	}
 
-	async function onUpdatePetshop (id, name, address, phone)
+	async function onUpdatePetshop (idOwner, id, name, address, phone, intervalWorks, documentCompany, statusService1, intervalPriceService1, statusService2, intervalPriceService2)
 	{
-		console.log("onUpdatePetshop...");
-		
+		console.log(`(index view) onUpdatePetshop`);
+
 		let api = new API();
-		let response = await api.petshop().update("", id, user.id_user, {name, address, phone});
+		let response = await api.petshop().update("", id, idOwner, {name, address, phone, intervalWorks, documentCompany, statusService1, intervalPriceService1, statusService2, intervalPriceService2});
 
 		if (response.code === 200) { getAllPetshops(); }
 	}
 
 	async function onCreatePetshop (name, address, phone, intervalWorks, documentCompany, statusService1, intervalPriceService1, statusService2, intervalPriceService2)
 	{
+		console.log(`(index view) onCreatePetshop`);
+
 		if (name !== undefined && address !== undefined && phone !== undefined)
 		{
 			let api = new API();
@@ -269,7 +288,7 @@ export default function Search (props)
 									{...p}
 									onEditPetshop={onEditPetshop}
 									onRemovePetshop={onConfirmRemovePetshop}
-									options={(p.idOwner === idUser)}
+									options={(p.idOwner === user?.id_user)}
 								/>
 							)
 						})

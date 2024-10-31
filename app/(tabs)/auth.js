@@ -22,7 +22,7 @@ export default function auth (props)
 	const { logout } = useLocalSearchParams();
 	const [mode, setMode] = useState(MODE_LOGIN_VIEW)
 	const [name, setName] = useState("");
-	const [mail, setMail] = useState("");
+	const [mail, setMail] = useState("dono_caopeao@mail.com");
 	const [password, setPassword] = useState("123456");
 	const [type, setType] = useState("");
 	const optionsTypeUser = [{id: 1, label: "Cliente", value: "PET_01"}, {id: 2, label: "Dono(a) de PetShop", value: "PET_02"}];

@@ -35,10 +35,10 @@ export default function home (props)
 
 		if (user && user.id_user !== ID_CURRENT_USER)
 		{
-			ID_CURRENT_USER = user.id_user;
-			await setUser(user);
+			console.log(`(profile view) start checkingUserLogged: ${user?.id_user}, nameUser: ${user?.name}`);
 
-			console.log("(profile view) user: ", user.name);
+			ID_CURRENT_USER = user.id_user;
+			setUser(user);
 		}
 	}
 

@@ -211,7 +211,7 @@ class API {
         }
 
         // erro's code P400 to P499
-        async function del (token, id)
+        async function del (token, idUser, id)
         {
             let status = {
                 code: "",
@@ -219,7 +219,7 @@ class API {
                 data: null
             }
             
-            await axios.delete(`/petshops/${id}/.json?auth=${token}`)
+            await axios.delete(`/petshops/${idUser}/${id}/.json?auth=${token}`)
             .then(res => {
                 status.code = 200;
                 status.message = "Sucesso!";
