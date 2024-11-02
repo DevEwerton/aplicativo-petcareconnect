@@ -12,7 +12,7 @@ export default function ItemListAnimal (props)
     return (
             <View style={styles.container}>
                 <View style={styles.colOne}>
-                    <MaterialCommunityIcons name={props.type} style={styles.icon}/>
+                    <MaterialCommunityIcons name={props.type.toLowerCase()} style={styles.icon}/>
                     {
                         props.options &&
                         <Button
@@ -24,7 +24,7 @@ export default function ItemListAnimal (props)
                 </View>
                 <View style={styles.colTwo}>
                     <Text style={styles.title}>{props.name}</Text>
-                    <Text style={styles.subtitle}>sexo: {props.sex}</Text>
+                    <Text style={styles.subtitle}>sexo: {props.sex === "MALE" ? "Macho" : "Fêmea"}</Text>
                     <Text style={styles.subtitle}>idade: {props.age}</Text>
                     <Text style={styles.subtitle}>raça: {props.breed}</Text>
                     {

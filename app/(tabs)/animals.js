@@ -9,54 +9,87 @@ import ItemListAnimal from "../../components/ItemListAnimal";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
 
-const ANIMALS = [
-	{
-		id: 1,
-		name: "Paçoca",
-		sex: "Macho",
-		breed: "Pomerânia",
-		age: "5",
-		type: "dog"
-	},
-	{
-		id: 2,
-		name: "Zeus",
-		sex: "Macho",
-		breed: "vira-lata",
-		age: "6",
-		type: "cat"
-	}
-];
+const API = require("../../api");
+// const ANIMALS = [
+	// {
+	// 	id: 1,
+	// 	name: "Paçoca",
+	// 	sex: "Macho",
+	// 	breed: "Pomerânia",
+	// 	age: "5",
+	// 	type: "dog"
+	// },
+	// {
+	// 	id: 2,
+	// 	name: "Zeus",
+	// 	sex: "Macho",
+	// 	breed: "vira-lata",
+	// 	age: "6",
+	// 	type: "cat"
+	// }
+// ];
 
 var ID_CURRENT_USER = null;
 
 export default function animals (props)
 {	
 	const router = useRouter();
-	const [animals, setAnimals] = useState(ANIMALS);
+	const [animals, setAnimals] = useState([]);
 	const [user, setUser] = useState(null);
 	const {
-		idOwner,
 		id,
 		idUser,
-		typeUser,
 		name,
-		address,
-		phone,
-		intervalWorks,
-		documentCompany,
-		statusService1,
-		intervalPriceService1,
-		statusService2,
-		intervalPriceService2,
+		breed,
+		age,
+		sex,
+		type,
 		action
 	} = useLocalSearchParams();
 
 	useEffect(() => 
 	{
 		setInterval(checkingUserLogged, 1000);
+		getAllAnimals();
+
+		if (action === "CREATE") { onCreateAnimal(name, breed, age, sex, type); }
 
 	}, [props, user]);
+
+	async function getAllAnimals ()
+	{
+		console.log(`(animals view) getAllAnimals idUser: ${user?.id_user}, nameUser: ${user?.name}`);
+
+		let api = new API();
+		let animalsScreen = [];
+		
+		if (!user?.id_user) { return; }
+
+		let response = await api.animals().getByUser("", user.id_user);
+
+		if (response.code === 200)
+		{
+			let data = response.data;
+			
+			if (data)
+			{
+				Object.keys(data).forEach(ka => { //ka = key animal
+					let animal = data[ka];
+					let pet = {
+						id: ka,
+						name: animal.name,
+						breed: animal.breed,
+						age: animal.age,
+						sex: animal.sex,
+						type: animal.type,
+					};
+					animalsScreen.push(pet);
+				});
+			}
+		}
+
+		setAnimals(animalsScreen);
+	}
 
 	async function checkingUserLogged ()
 	{
@@ -128,18 +161,34 @@ export default function animals (props)
 		);
 	}
 
+	async function onCreateAnimal (name, breed, age, sex, type)
+	{
+		console.log(`(animals view) onCreateAnimal`);
+
+		if (user?.id_user !== "")
+		{
+			let api = new API();
+			let data = {name, breed, age, sex, type};
+			await api.animals().post("", user.id_user, data);
+			getAllAnimals();
+		}
+	}
+
 	return (
 		<View style={styles.container}>
 			<Header />
 			<View style={styles.body}>
-				<Text style={styles.title}>Animais</Text>
-				<Button
-					style={styles.button}
-					label="+"
-					onPress={() => {
-						router.push({ pathname: "/create_animal", params: { mode: "CREATE", idUser } });
-					}}
-				/>
+				<Text style={styles.title}>Animais {user?.type === "PET_02" ? "para Doação" : ""}</Text>
+				{
+					user?.type === "PET_01" &&
+					<Button
+						style={styles.button}
+						label="+"
+						onPress={() => {
+							router.push({ pathname: "/create_animal", params: { mode: "CREATE" } });
+						}}
+					/>
+				}
 				<ScrollView
 					style={styles.scrollView}
 					contentContainerStyle={{alignItems: "center"}}

@@ -79,7 +79,7 @@ export default function Search (props)
 		let api = new API();
 		let petshopsScreen = [];
 		
-		if (user.type === "PET_01") //client
+		if (user?.type === "PET_01") //client
 		{
 			let response = await api.petshop().getAll("");
 

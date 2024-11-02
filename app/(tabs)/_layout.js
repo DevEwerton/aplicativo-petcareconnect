@@ -93,6 +93,10 @@ export default function TabLayout (props)
 				name="create_petshop"
 				options={{ title:"Cadastrar Petshop", tabBarButton: () => null }}
 			/>
+			<Tabs.Screen
+				name="create_animal"
+				options={{ title:"Cadastrar Animal", tabBarButton: () => null }}
+			/>
 		</Tabs>
 	);
 }

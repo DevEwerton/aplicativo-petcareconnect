@@ -27,8 +27,6 @@ export default function CreatePetShop (props)
 
 	useEffect(() => 
 	{
-		console.log("idUser: ", idUser);
-
 		if (mode === "UPDATE") 
 		{ 
 			onEdit(idParam, nameParam, addressParam, phoneParam, documentCompanyParam, idOwnerParam, intervalPriceService1Param, intervalPriceService2Param, intervalWorksParam, statusService1Param, statusService2Param);

@@ -237,7 +237,7 @@ class API {
         async function getByUser(token, idUser)
         {
             let status = {
-                code: "",
+                code: 500,
                 message: "",
                 data: null
             }
@@ -267,6 +267,152 @@ class API {
             getAll,
             update,
             getByUser,
+        }
+    }
+
+    // Erros code A
+    animals ()
+    {
+        // erro's code PA100 to P199
+        async function post (token, idUser, data)
+        {
+            let status = {
+                code: "",
+                message: "",
+                data: null
+            }
+            
+            await axios.post(`/animals/${idUser}/.json?auth=${token}`, {...data})
+            .then(res => {
+                
+                if (res.data)
+                {
+                    status.code = 200;
+                    status.message = "Sucesso!";
+                }
+            })
+            .catch(err => {
+                console.log("A100 ", err);
+                status.code = 400;
+                status.message = "Opsssss, tivemos algum problema ao cadastrar o animal! Tente fazer o login novamente! (A100)";
+            })
+
+            return status;
+        }
+
+        // erro's code P200 to P299
+        async function getByUser(token, idUser)
+        {
+            let status = {
+                code: 500,
+                message: "",
+                data: null
+            }
+            
+            await axios.get(`/animals/${idUser}.json?auth=${token}`)
+            .then(res => {
+                
+                if (res.data)
+                {
+                    status.code = 200;
+                    status.message = "Sucesso!";
+                    status.data = res.data;
+                }
+            })
+            .catch(err => {
+                console.log("P200 ", err);
+                status.code = 400;
+                status.message = "Opsssss, tivemos algum problema ao recuperar os animais! Tente fazer o login novamente! (P200)";
+            })
+
+            return status;
+        }
+
+        // // erro's code P100 to P199
+        // async function getAll (token)
+        // {
+        //     let status = {
+        //         code: "",
+        //         message: "",
+        //         data: null
+        //     }
+            
+        //     await axios.get(`/petshops/.json?auth=${token}`)
+        //     .then(res => {
+                
+        //         if (res.data)
+        //         {
+        //             status.code = 200;
+        //             status.message = "Sucesso!";
+        //             status.data = res.data;
+        //         }
+        //     })
+        //     .catch(err => {
+        //         console.log("P100 ", err);
+        //         status.code = 400;
+        //         status.message = "Opsssss, tivemos algum problema ao recuperar os petshops! Tente fazer o login novamente! (P100)";
+        //     })
+
+        //     return status;
+        // }
+
+        // // erro's code P300 to P399
+        // async function update (token, id, idUser, data)
+        // {
+        //     let status = {
+        //         code: "",
+        //         message: "",
+        //         data: null
+        //     }
+            
+        //     await axios.patch(`/petshops/${idUser}/${id}/.json?auth=${token}`, {...data})
+        //     .then(res => {
+                
+        //         if (res.data)
+        //         {
+        //             status.code = 200;
+        //             status.message = "Sucesso!";
+        //         }
+        //     })
+        //     .catch(err => {
+        //         console.log("P300 ", err);
+        //         status.code = 400;
+        //         status.message = "Opsssss, tivemos algum problema ao atualizar o petshop! Tente fazer o login novamente! (P300)";
+        //     })
+
+        //     return status;
+        // }
+
+        // // erro's code P400 to P499
+        // async function del (token, idUser, id)
+        // {
+        //     let status = {
+        //         code: "",
+        //         message: "",
+        //         data: null
+        //     }
+            
+        //     await axios.delete(`/petshops/${idUser}/${id}/.json?auth=${token}`)
+        //     .then(res => {
+        //         status.code = 200;
+        //         status.message = "Sucesso!";
+        //     })
+        //     .catch(err => {
+        //         console.log("P400 ", err);
+        //         status.code = 400;
+        //         status.message = "Opsssss, tivemos algum problema ao excluir o petshop! Tente fazer o login novamente! (P400)";
+        //     })
+
+        //     return status;
+        // }
+
+        return {
+            // del,
+            post,
+            getByUser
+            // getAll,
+            // update,
+            // getByUser,
         }
     }
 }
