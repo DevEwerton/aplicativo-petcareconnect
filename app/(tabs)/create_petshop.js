@@ -40,7 +40,7 @@ export default function CreatePetShop (props)
 	async function onEdit (idParam, nameParam, addressParam, phoneParam, documentCompanyParam, idOwnerParam, intervalPriceService1Param, intervalPriceService2Param, intervalWorksParam, statusService1Param, statusService2Param)
 	{
 		console.log("onPrepareEdit...");
-		
+
 		setIdOwner(idOwnerParam);
 		setId(idParam);
 		setName(nameParam);
@@ -48,9 +48,9 @@ export default function CreatePetShop (props)
 		setPhone(phoneParam);
 		setIntervalWorks(intervalWorksParam);
 		setDocumentCompany(documentCompanyParam);
-		setStatusService1(statusService1Param);
+		setStatusService1(statusService1Param === "true");
 		setIntervalPriceService1(intervalPriceService1Param);
-		setStatusService2(statusService2Param);
+		setStatusService2(statusService2Param === "true");
 		setIntervalPriceService2(intervalPriceService2Param);
 	}
 

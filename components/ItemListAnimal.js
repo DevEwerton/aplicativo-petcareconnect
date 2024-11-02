@@ -1,28 +1,18 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { COLORS, SIZES } from "../constants";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+
 import Button from "./Button";
 
-export default function ItemListPetshop (props)
+export default function ItemListAnimal (props)
 {
     const [showOptions, setShowOptions] = useState(false);
 
     return (
             <View style={styles.container}>
                 <View style={styles.colOne}>
-                    <FontAwesome name="building" style={styles.icon}/>
-                </View>
-                <View style={styles.colTwo}>
-                    <Text style={styles.title}>{props.name}</Text>
-                    <Text style={styles.subtitle}>{props.address}</Text>
-                    <Text style={styles.subtitle}>Telefone: {props.phone}</Text>
-                    <Text style={styles.subtitle}>Serviços oferecidos:</Text>
-                    <Text style={styles.subtitle}>Horário de funcionamento: {props.intervalWorks}</Text>
-                    <View style={styles.services}>
-                        {props.statusService1 === "true" && <Text style={styles.subtitle}>Banho & Tosa (R$ {props.intervalPriceService1})</Text>}
-                        {props.statusService2 === "true" && <Text style={styles.subtitle}>Médico Veterinário (R$ {props.intervalPriceService2})</Text>}
-                    </View>
+                    <MaterialCommunityIcons name={props.type} style={styles.icon}/>
                     {
                         props.options &&
                         <Button
@@ -31,6 +21,12 @@ export default function ItemListPetshop (props)
                             onPress={() => setShowOptions(!showOptions)}
                         />
                     }
+                </View>
+                <View style={styles.colTwo}>
+                    <Text style={styles.title}>{props.name}</Text>
+                    <Text style={styles.subtitle}>sexo: {props.sex}</Text>
+                    <Text style={styles.subtitle}>idade: {props.age}</Text>
+                    <Text style={styles.subtitle}>raça: {props.breed}</Text>
                     {
                         showOptions &&
                         <View style={styles.options}>
@@ -39,7 +35,7 @@ export default function ItemListPetshop (props)
                                 style={styles.buttonOption}
                                 styleLabel={styles.labelButton}
                                 onPress={() => {
-                                    props.onEditPetshop(props);
+                                    props.onEditAnimal(props);
                                     setShowOptions(false);
                                 }}
                             />
@@ -48,7 +44,7 @@ export default function ItemListPetshop (props)
                                 style={styles.buttonOption}
                                 styleLabel={styles.labelButton}
                                 onPress={() => {
-                                    props.onRemovePetshop(props);
+                                    props.onRemoveAnimal(props);
                                     setShowOptions(false);
                                 }}
                             />
@@ -61,10 +57,10 @@ export default function ItemListPetshop (props)
 
 const styles = StyleSheet.create({
     container: {
-        minHeight: 240,
+        minHeight: 220,
         width: "100%",
         display: "flex",
-        flexDirection: "row",
+        flexDirection: "column",
         backgroundColor: COLORS.lightOne,
         borderRadius: 10,
         marginVertical: 5,
@@ -76,30 +72,29 @@ const styles = StyleSheet.create({
         elevation: 2
     },
     colOne: {
-        width: "30%",
+        width: "100%",
         display: "flex",
+        flexGrow: 1,
         justifyContent: "center",
         alignItems: "center",
         verticalAlign: "middle",
-        textAlign: "center"
+        textAlign: "center",
     },
     colTwo: {
-        width: "70%",
+        width: "100%",
         display: "flex",
         justifyContent: "center",
-        position: "relative"
-    },
-    services: {
-        height: 40
+        position: "relative",
     },
     icon: {
-        fontSize: 50,
+        fontSize: 120,
         color: COLORS.darkTwo,
     },
     title: {
         fontSize: SIZES.title,
         color: COLORS.darkTwo,
-        fontWeight: "600"
+        fontWeight: "600",
+        textAlign: "center"
     },
     subtitle: {
         fontSize: SIZES.subtitle,

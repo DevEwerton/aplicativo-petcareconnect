@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { StyleSheet, View, Text, ScrollView, Alert } from "react-native";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { COLORS, HEIGHT_HEADER } from "../../constants";
-import { ItemListPetshop } from "../../components/ItemListPetshop";
+import ItemListPetshop from "../../components/ItemListPetshop";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Header from "../../components/Header";
@@ -28,15 +28,13 @@ var ID_CURRENT_USER = null;
 
 export default function Search (props)
 {
-	const router = useRouter();	
-	const navigation = useNavigation();
+	const router = useRouter();
 	const [petshops, setPetshops] = useState([]);
 	const [user, setUser] = useState(null);
 	const {
 		idOwner,
 		id,
 		idUser,
-		nameUser,
 		typeUser,
 		name,
 		address,
