@@ -1,5 +1,5 @@
 import {useState} from "react";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import { StyleSheet, View, Text, ScrollView, Alert } from "react-native";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { COLORS, HEIGHT_HEADER } from "../../constants";
@@ -53,6 +53,7 @@ export default function animals (props)
 		getAllAnimals();
 
 		if (action === "CREATE") { onCreateAnimal(name, breed, age, sex, type); }
+		if (action === "UPDATED") { onUpdateAnimal(id, name, breed, age, sex, type); }
 
 	}, [props, user]);
 
@@ -109,34 +110,45 @@ export default function animals (props)
 	{
 		console.log(`(animals view) onEditAnimal`);
 
-		// let {id,
-		// 	name,
-		// 	address,
-		// 	phone,
-		// 	documentCompany,
-		// 	idOwner,
-		// 	intervalPriceService1,
-		// 	intervalPriceService2,
-		// 	intervalWorks,
-		// 	statusService1,
-		// 	statusService2
-		// } = props;
+		let {
+			id,
+			name,
+			breed,
+			sex,
+			age,
+			type
+		} = props;
 
-		// router.push({ pathname: "/create_animal", params: { 
-		// 		mode: "UPDATE",
-		// 		idParam: id,
-		// 		nameParam: name,
-		// 		addressParam: address,
-		// 		phoneParam: phone,
-		// 		documentCompanyParam: documentCompany,
-		// 		idOwnerParam: idOwner,
-		// 		intervalPriceService1Param: intervalPriceService1,
-		// 		intervalPriceService2Param: intervalPriceService2,
-		// 		intervalWorksParam: intervalWorks,
-		// 		statusService1Param: statusService1,
-		// 		statusService2Param: statusService2,
-		// 	}
-		// });
+		router.push({ pathname: "/create_animal", params: { 
+				mode: "UPDATE",
+				idParam: id,
+				nameParam: name,
+				breedParam: breed,
+				sexParam: sex,
+				ageParam: age,
+				typeParam: type
+			}
+		});
+	}
+
+	async function onRemoveAnimal (props)
+	{
+		console.log(`(animals view) onRemoveAnimal`);
+
+		if (user?.id_user !== "")
+		{
+			let api = new API();
+			let response = await api.animals().del("", user.id_user, props.id);
+	
+			if (response.code !== 200)
+			{
+				Alert.alert(response.message);
+			}
+			else
+			{
+				getAllAnimals();
+			}
+		}		
 	}
 
 	async function onConfirmRemoveAnimal (props)
@@ -171,6 +183,19 @@ export default function animals (props)
 			let data = {name, breed, age, sex, type};
 			await api.animals().post("", user.id_user, data);
 			getAllAnimals();
+		}
+	}
+
+	async function onUpdateAnimal (id, name, breed, age, sex, type)
+	{
+		console.log(`(animals view) onUpdateAnimal`);
+
+		if (user?.id_user !== "")
+		{
+			let api = new API();
+			let response = await api.animals().update("", id, user.id_user, {name, breed, age, sex, type});
+	
+			if (response.code === 200) { getAllAnimals(); }
 		}
 	}
 

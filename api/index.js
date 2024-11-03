@@ -328,91 +328,61 @@ class API {
             return status;
         }
 
-        // // erro's code P100 to P199
-        // async function getAll (token)
-        // {
-        //     let status = {
-        //         code: "",
-        //         message: "",
-        //         data: null
-        //     }
+        // erro's code P300 to P399
+        async function update (token, id, idUser, data)
+        {
+            let status = {
+                code: "",
+                message: "",
+                data: null
+            }
             
-        //     await axios.get(`/petshops/.json?auth=${token}`)
-        //     .then(res => {
+            await axios.patch(`/animals/${idUser}/${id}/.json?auth=${token}`, {...data})
+            .then(res => {
                 
-        //         if (res.data)
-        //         {
-        //             status.code = 200;
-        //             status.message = "Sucesso!";
-        //             status.data = res.data;
-        //         }
-        //     })
-        //     .catch(err => {
-        //         console.log("P100 ", err);
-        //         status.code = 400;
-        //         status.message = "Opsssss, tivemos algum problema ao recuperar os petshops! Tente fazer o login novamente! (P100)";
-        //     })
+                if (res.data)
+                {
+                    status.code = 200;
+                    status.message = "Sucesso!";
+                }
+            })
+            .catch(err => {
+                console.log("P300 ", err);
+                status.code = 400;
+                status.message = "Opsssss, tivemos algum problema ao atualizar o animal! Tente fazer o login novamente! (P300)";
+            })
 
-        //     return status;
-        // }
+            return status;
+        }
 
-        // // erro's code P300 to P399
-        // async function update (token, id, idUser, data)
-        // {
-        //     let status = {
-        //         code: "",
-        //         message: "",
-        //         data: null
-        //     }
+        // erro's code P400 to P499
+        async function del (token, idUser, id)
+        {
+            let status = {
+                code: "",
+                message: "",
+                data: null
+            }
             
-        //     await axios.patch(`/petshops/${idUser}/${id}/.json?auth=${token}`, {...data})
-        //     .then(res => {
-                
-        //         if (res.data)
-        //         {
-        //             status.code = 200;
-        //             status.message = "Sucesso!";
-        //         }
-        //     })
-        //     .catch(err => {
-        //         console.log("P300 ", err);
-        //         status.code = 400;
-        //         status.message = "Opsssss, tivemos algum problema ao atualizar o petshop! Tente fazer o login novamente! (P300)";
-        //     })
+            await axios.delete(`/animals/${idUser}/${id}/.json?auth=${token}`)
+            .then(res => {
+                status.code = 200;
+                status.message = "Sucesso!";
+            })
+            .catch(err => {
+                console.log("P400 ", err);
+                status.code = 400;
+                status.message = "Opsssss, tivemos algum problema ao excluir o animal! Tente fazer o login novamente! (P400)";
+            })
 
-        //     return status;
-        // }
-
-        // // erro's code P400 to P499
-        // async function del (token, idUser, id)
-        // {
-        //     let status = {
-        //         code: "",
-        //         message: "",
-        //         data: null
-        //     }
-            
-        //     await axios.delete(`/petshops/${idUser}/${id}/.json?auth=${token}`)
-        //     .then(res => {
-        //         status.code = 200;
-        //         status.message = "Sucesso!";
-        //     })
-        //     .catch(err => {
-        //         console.log("P400 ", err);
-        //         status.code = 400;
-        //         status.message = "Opsssss, tivemos algum problema ao excluir o petshop! Tente fazer o login novamente! (P400)";
-        //     })
-
-        //     return status;
-        // }
+            return status;
+        }
 
         return {
-            // del,
+            del,
             post,
+            update,
             getByUser
-            // getAll,
-            // update,
-            // getByUser,
         }
     }
 }

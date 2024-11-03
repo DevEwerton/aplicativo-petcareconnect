@@ -2,12 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, FlatList, StyleSheet } from 'react-native';
 import { COLORS, SIZES } from '../constants'; 
 
-const Select = ({ label, onValueChange, options }) => {
+const Select = ({ label, onValueChange, options, value }) => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [choosen, setChoosen] = useState(null);
 
 	useEffect(() => {
-		console.log("options: ", options);
+		// console.log("(select) value: ", value);
+
+		if (value)
+		{
+			let item = options.filter(o => o.value === value)[0];
+			setChoosen(item);
+		}
 	});
 
 	const handleSelect = (item) => {

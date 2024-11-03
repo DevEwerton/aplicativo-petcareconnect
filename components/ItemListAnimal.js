@@ -21,12 +21,6 @@ export default function ItemListAnimal (props)
                             onPress={() => setShowOptions(!showOptions)}
                         />
                     }
-                </View>
-                <View style={styles.colTwo}>
-                    <Text style={styles.title}>{props.name}</Text>
-                    <Text style={styles.subtitle}>sexo: {props.sex === "MALE" ? "Macho" : "Fêmea"}</Text>
-                    <Text style={styles.subtitle}>idade: {props.age}</Text>
-                    <Text style={styles.subtitle}>raça: {props.breed}</Text>
                     {
                         showOptions &&
                         <View style={styles.options}>
@@ -50,6 +44,12 @@ export default function ItemListAnimal (props)
                             />
                         </View>
                     }
+                </View>
+                <View style={styles.colTwo}>
+                    <Text style={styles.title}>{props.name}</Text>
+                    <Text style={styles.subtitle}>sexo: {props.sex === "MALE" ? "Macho" : "Fêmea"}</Text>
+                    <Text style={styles.subtitle}>idade: {props.age}</Text>
+                    <Text style={styles.subtitle}>raça: {props.breed}</Text>
                 </View>
             </View>
     )

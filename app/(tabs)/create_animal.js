@@ -20,33 +20,28 @@ export default function CreateAnimal (props)
 	const optionsSex = [{id: 1, label: "Macho", value: "MALE"}, {id: 2, label: "Fêmea", value: "FEMALE"}];
 	const optionsType = [{id: 1, label: "Cachorro", value: "DOG"}, {id: 2, label: "Gato", value: "CAT"}];
 	const [modeView, setModeView] = useState("CREATE");
-	const { mode, idParam, nameParam} = useLocalSearchParams();
+	const { mode, idParam, nameParam, breedParam, sexParam, typeParam, ageParam} = useLocalSearchParams();
 
 	useEffect(() => 
 	{
 		if (mode === "UPDATE") 
 		{
-			onEdit(idParam, nameParam);
+			onEdit(idParam, nameParam, breedParam, sexParam, typeParam, ageParam);
 			setModeView("UPDATE");
 		}
-		
-	}, [props]);
 
-	async function onEdit (idParam, nameParam, addressParam, phoneParam, documentCompanyParam, idOwnerParam, intervalPriceService1Param, intervalPriceService2Param, intervalWorksParam, statusService1Param, statusService2Param)
+	}, [props,]);
+
+	async function onEdit (idParam, nameParam, breedParam, sexParam, typeParam, ageParam)
 	{
 		console.log("onPrepareEdit...");
 
-		setIdOwner(idOwnerParam);
 		setId(idParam);
 		setName(nameParam);
-		setAddress(addressParam);
-		setPhone(phoneParam);
-		setIntervalWorks(intervalWorksParam);
-		setDocumentCompany(documentCompanyParam);
-		setStatusService1(statusService1Param === "true");
-		setIntervalPriceService1(intervalPriceService1Param);
-		setStatusService2(statusService2Param === "true");
-		setIntervalPriceService2(intervalPriceService2Param);
+		setBreed(breedParam);
+		setSex(sexParam);
+		setType(typeParam);
+		setAge(ageParam);
 	}
 
 	async function onSave ()
@@ -74,10 +69,9 @@ export default function CreateAnimal (props)
 		let action = "CREATE";
 
 		if (modeView === "UPDATE") 
-		{ 
-			// params.idOwner = idOwner;
-			// params.id = id;
-			// action = "UPDATED";
+		{
+			params.id = idParam;
+			action = "UPDATED";
 		}
 
 		router.push({ pathname: "/animals", params: { ...params, action } });
