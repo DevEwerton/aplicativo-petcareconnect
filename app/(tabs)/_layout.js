@@ -97,6 +97,10 @@ export default function TabLayout (props)
 				name="create_animal"
 				options={{ title:"Cadastrar Animal", tabBarButton: () => null }}
 			/>
+			<Tabs.Screen
+				name="create_reservation"
+				options={{ title:"Fazer Reserva", tabBarButton: () => null }}
+			/>
 		</Tabs>
 	);
 }

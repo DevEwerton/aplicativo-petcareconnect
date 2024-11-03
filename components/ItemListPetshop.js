@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableNativeFeedback } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { COLORS, SIZES } from "../constants";
 import Button from "./Button";
@@ -9,6 +9,7 @@ export default function ItemListPetshop (props)
     const [showOptions, setShowOptions] = useState(false);
 
     return (
+        <TouchableNativeFeedback onPress={() => props.onOpen(props)}>
             <View style={styles.container}>
                 <View style={styles.colOne}>
                     <FontAwesome name="building" style={styles.icon}/>
@@ -56,6 +57,7 @@ export default function ItemListPetshop (props)
                     }
                 </View>
             </View>
+        </TouchableNativeFeedback>
     )
 }
 

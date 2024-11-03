@@ -257,6 +257,22 @@ export default function Search (props)
 		}
 	}
 
+	async function onOpen (props)
+	{
+		console.log(`(index view) onOpen`);
+
+		let data = {
+			idPetshop: props.id,
+			namePetshop: props.name
+		};
+
+		router.push({ pathname: "/create_reservation", params: {
+			idParam: props.id,
+			nameParam: props.name,
+		}
+	});
+	}
+
 	return (
 		<View style={styles.container}>
 			<Header />
@@ -286,6 +302,7 @@ export default function Search (props)
 									{...p}
 									onEditPetshop={onEditPetshop}
 									onRemovePetshop={onConfirmRemovePetshop}
+									onOpen={onOpen}
 									options={(p.idOwner === user?.id_user)}
 								/>
 							)

@@ -22,7 +22,8 @@ export default function auth (props)
 	const { logout } = useLocalSearchParams();
 	const [mode, setMode] = useState(MODE_LOGIN_VIEW)
 	const [name, setName] = useState("");
-	const [mail, setMail] = useState("dono_caopeao@mail.com");
+	const [mail, setMail] = useState("cliente@mail.com");
+	const [phone, setPhone] = useState("");
 	const [password, setPassword] = useState("123456");
 	const [type, setType] = useState("");
 	const optionsTypeUser = [{id: 1, label: "Cliente", value: "PET_01"}, {id: 2, label: "Dono(a) de PetShop", value: "PET_02"}];
@@ -80,15 +81,23 @@ export default function auth (props)
 		let m = mail;
 		let p = password;
 		let t = type;
+		let c = phone;
 		
-		if (n.toString().trim() === "" || m.toString().trim() === "" || p.toString().trim() === "" || t.toString().trim() === "")
+		if
+		(
+			n.toString().trim() === "" ||
+			m.toString().trim() === "" ||
+			p.toString().trim() === "" ||
+			t.toString().trim() === "" ||
+			c.toString().trim() === ""
+		)
 		{
 			Alert.alert("Opsssss, verifique os campos, e preencha-os corretamente!");
 			return;	
 		}
 		
 		let api = new API();
-		let response = await api.user().create({mail: m, password: p, name: n, type: t});
+		let response = await api.user().create({mail: m, password: p, name: n, type: t, phone: c});
 
 		if (response.code === 200)
 		{
@@ -157,6 +166,12 @@ export default function auth (props)
 						placeholder="******"
 						secureTextEntry={true}
 						onChangeText={(password) => setPassword(password)}
+					/>
+					<Input
+						label="Telefone"
+						placeholder="(11) 95555-6666"
+						value={phone}
+						onChangeText={(phone) => setPhone(phone)}
 					/>
 					 <Select
     					label="Tipo de Usuário"

@@ -53,6 +53,7 @@ export default function home (props)
 					<View>
 						<Text style={styles.title}>{optionsTypeUser.filter(t => t.value === user.type)[0].label}</Text>
 						<Text style={styles.title}>{user.name}</Text>
+						<Text style={styles.title}>{user.phone}</Text>
 						<Text style={styles.title}>{user.mail}</Text>
 					</View>
 				}

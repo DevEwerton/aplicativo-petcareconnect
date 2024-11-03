@@ -7,21 +7,23 @@ import ItemListReservation from "../../components/ItemListReservation";
 var RESERVATIONS = [
 	{
 		id: 1,
-		nameOwner: "Ewerton",
-		nameAnimal: "Milu",
-		phone: "11 95999-8098",
-		type: "DOG",
 		when: 1733238000000,
 		status: 1, //1 for scheduled, 2 for finished
+		nameOwner: "Ewerton",
+		phoneOwner: "11 95999-8098",
+		nameAnimal: "Milu",
+		typeAnimal: "DOG",
+		namePetshop: "Cãopeão Unidde 1"
 	},
 	{
 		id: 2,
-		nameOwner: "Maria",
-		nameAnimal: "Patty",
-		phone: "11 95999-8098",
-		type: "CAT",
 		when: 1733238000000,
 		status: 2, //1 for scheduled, 2 for finished
+		nameOwner: "Maria",
+		phoneOwner: "11 95999-8098",
+		nameAnimal: "Patty",
+		typeAnimal: "CAT",
+		namePetshop: "Cãopeão Unidde 1"
 	},
 ]
 

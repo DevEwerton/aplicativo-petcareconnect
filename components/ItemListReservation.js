@@ -12,13 +12,15 @@ export default function ItemListReservation (props)
     return (
             <View style={styles.container}>
                 <View style={styles.colOne}>
-                    <MaterialCommunityIcons name={props.type.toLowerCase()} style={styles.icon}/>
+                    <MaterialCommunityIcons name={props.typeAnimal.toLowerCase()} style={styles.icon}/>
                 </View>
                 <View style={styles.colTwo}>
                     <Text style={styles.title}>{props.nameAnimal}</Text>
+                    <Text></Text>
                     <Text style={styles.subtitle}>Para: {props.when}</Text>
-                    <Text style={styles.subtitle}>Dono: {props.nameOwner}</Text>
-                    <Text style={styles.subtitle}>Telefone: {props.phone}</Text>
+                    <Text style={styles.subtitle}>Onde: {props.namePetshop}</Text>
+                    <Text style={styles.subtitle}>Cliente: {props.nameOwner}</Text>
+                    <Text style={styles.subtitle}>Telefone do Cliente: {props.phoneOwner}</Text>
                     {
                         props.options &&
                         <Button
