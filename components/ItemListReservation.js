@@ -31,25 +31,31 @@ export default function ItemListReservation (props)
                     }
                     {
                         showOptions &&
-                        <View style={styles.options}>
-                            <Button
-                                label="alterar"
-                                style={styles.buttonOption}
-                                styleLabel={styles.labelButton}
-                                onPress={() => {
-                                    props.onEditPetshop(props);
-                                    setShowOptions(false);
-                                }}
-                            />
-                            <Button
-                                label="excluir"
-                                style={styles.buttonOption}
-                                styleLabel={styles.labelButton}
-                                onPress={() => {
-                                    props.onRemovePetshop(props);
-                                    setShowOptions(false);
-                                }}
-                            />
+                        <View style={styles.options}> 
+                            {
+                                props.typeUser === "PET_02" &&   
+                                <Button
+                                    label="alterar"
+                                    style={styles.buttonOption}
+                                    styleLabel={styles.labelButton}
+                                    onPress={() => {
+                                        props.onEditPetshop(props);
+                                        setShowOptions(false);
+                                    }}
+                                />
+                            }
+                            {
+                                props.typeUser === "PET_01" &&
+                                <Button
+                                    label="excluir"
+                                    style={styles.buttonOption}
+                                    styleLabel={styles.labelButton}
+                                    onPress={() => {
+                                        props.onRemoveReservation(props);
+                                        setShowOptions(false);
+                                    }}
+                                />
+                            }
                         </View>
                     }
                 </View>

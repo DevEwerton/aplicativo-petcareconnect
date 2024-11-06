@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View, Text, ScrollView, Alert } from "react-native";
-import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { COLORS, HEIGHT_HEADER } from "../../constants";
 import ItemListPetshop from "../../components/ItemListPetshop";
 import AsyncStorage from "@react-native-async-storage/async-storage";
