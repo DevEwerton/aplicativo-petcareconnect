@@ -11,6 +11,8 @@ export default function ItemListReservation (props)
 
     return (
             <View style={styles.container}>
+                {props.status === 2 && <View style={styles.filterFinished}></View>}
+                {props.status === 3 && <View style={styles.filterNotFinished}></View>}
                 <View style={styles.colOne}>
                     <MaterialCommunityIcons name={props.typeAnimal.toLowerCase()} style={styles.icon}/>
                 </View>
@@ -35,11 +37,23 @@ export default function ItemListReservation (props)
                             {
                                 props.typeUser === "PET_02" &&   
                                 <Button
-                                    label="alterar"
+                                    label="finalizado"
                                     style={styles.buttonOption}
                                     styleLabel={styles.labelButton}
                                     onPress={() => {
-                                        props.onEditPetshop(props);
+                                        props.onEditReservation(props, 2);
+                                        setShowOptions(false);
+                                    }}
+                                />
+                            }
+                            {
+                                props.typeUser === "PET_02" &&   
+                                <Button
+                                    label="não finalizado"
+                                    style={styles.buttonOption}
+                                    styleLabel={styles.labelButton}
+                                    onPress={() => {
+                                        props.onEditReservation(props, 3);
                                         setShowOptions(false);
                                     }}
                                 />
@@ -59,7 +73,6 @@ export default function ItemListReservation (props)
                         </View>
                     }
                 </View>
-                {props.status === 2 && <View style={styles.filter}></View>}
             </View>
     )
 }
@@ -80,13 +93,23 @@ const styles = StyleSheet.create({
         elevation: 2,
         position: "relative"
     },
-    filter: {
+    filterFinished: {
         position: "absolute",
         top: 0,
         left: 0,
         height: "100%",
         width: "100%",
         backgroundColor: "#28a745",
+        opacity: 0.3,
+        borderRadius: 10,
+    },
+    filterNotFinished: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        height: "100%",
+        width: "100%",
+        backgroundColor: "#dc3545",
         opacity: 0.3,
         borderRadius: 10,
     },

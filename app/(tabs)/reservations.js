@@ -66,8 +66,11 @@ export default function reservations (props)
 		year = d.getFullYear();    
 		day = ("0" + day).slice(-2);
 		month = ("0" + month).slice(-2);
+		hours = d.getHours();
+		minutes = d.getMinutes();
+		minutes = minutes.toString().padStart(2, "0");
 
-		return `${day}/${month}/${year}`;
+		return `${day}/${month}/${year} ${hours}:${minutes}`;
 	}
 
 	async function getAllReservations ()
@@ -162,9 +165,15 @@ export default function reservations (props)
 		setReservations(reservationsScreen);
 	}
 
-	async function onEditReservation ()
+	async function onEditReservation (props, final)
 	{
+		console.log(`(reservations view) onEditReservation idUser: ${user?.id_user}, nameUser: ${user?.name}`);
 
+		let api = new API();
+		await api.scheduled().update("", props.idPetshop, props.id, {status: final});
+		await getAllReservations();
+
+		console.log("props: ", props);
 	}
 
 	async function onRemoveReservation (props)
